@@ -1,0 +1,8 @@
+node_modules/
+.claude/
+api-check/
+api-deploy.zip
+deploy.zip
+old version/
+*.local.json
+.env
