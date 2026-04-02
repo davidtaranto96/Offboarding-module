@@ -2,33 +2,6 @@
 
 A single-page web application for IT admins to securely offboard Microsoft 365 users: back up OneDrive & emails to Azure Blob Storage, remove licenses and group memberships, and block sign-in — all in one auditable workflow.
 
-**Live app:** https://black-cliff-00e487410.6.azurestaticapps.net
-
----
-
-## Screenshots
-
-### Login
-![Login](docs/screenshots/01-login.png)
-
-### Search & Checklist
-![Search](docs/screenshots/02-search-checklist.png)
-
-### Backup Panel
-![Backup](docs/screenshots/03-backup.png)
-
-### Offboarding Actions
-![Offboarding](docs/screenshots/04-offboarding.png)
-
-### Full Run
-![Full Run](docs/screenshots/05-fullrun.png)
-
-### History & Audit Trail
-![History](docs/screenshots/06-history.png)
-
-### Dark Mode
-![Dark Mode](docs/screenshots/07-darkmode.png)
-
 ---
 
 ## Features
