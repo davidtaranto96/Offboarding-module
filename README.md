@@ -1,175 +1,178 @@
-# Microsoft 365 Offboarding App
+# 🔒 JBKnowledge IT Offboarding Portal
 
-A single-page web application for IT administrators to automate employee offboarding in Microsoft 365 environments. Built with vanilla JavaScript, MSAL.js, and Azure services.
+A single-page web application for IT admins to securely offboard Microsoft 365 users: back up OneDrive & emails to Azure Blob Storage, remove licenses and group memberships, and block sign-in — all in one auditable workflow.
 
-![Azure Static Web Apps](https://img.shields.io/badge/Azure-Static%20Web%20Apps-blue?logo=microsoftazure)
-![Microsoft Graph](https://img.shields.io/badge/Microsoft-Graph%20API-green?logo=microsoft)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+**Live app:** https://black-cliff-00e487410.6.azurestaticapps.net
+
+---
+
+## Screenshots
+
+### Login
+![Login](docs/screenshots/01-login.png)
+
+### Search & Checklist
+![Search](docs/screenshots/02-search-checklist.png)
+
+### Backup Panel
+![Backup](docs/screenshots/03-backup.png)
+
+### Offboarding Actions
+![Offboarding](docs/screenshots/04-offboarding.png)
+
+### Full Run
+![Full Run](docs/screenshots/05-fullrun.png)
+
+### History & Audit Trail
+![History](docs/screenshots/06-history.png)
+
+### Dark Mode
+![Dark Mode](docs/screenshots/07-darkmode.png)
+
+---
 
 ## Features
 
-### User Management
-- **Search users** by email, name, or partial match via Microsoft Graph API
-- **User profile card** with avatar, job title, department, groups, and licenses
-- **Pre-flight checklist** validating OneDrive access, mailbox access, license status, and data retention window
-- **Refresh button** to reload user data after changes
+| Feature | Description |
+|---------|-------------|
+| 🔍 User search | Search M365 users by name or email via Graph API |
+| ✅ Pre-offboarding checklist | Auto-runs: OneDrive size, mailbox, groups, licenses |
+| 📁 OneDrive backup | Recursively backs up all files to Azure Blob Storage |
+| 📧 Email backup | Backs up all mail folders and messages as .eml files |
+| ⚙️ Offboarding actions | Remove licenses, remove groups, block sign-in |
+| 📋 History | Full log with filters, stats dashboard, CSV export |
+| 🔐 Audit trail | Per-action audit log stored in blob storage |
+| 👥 Batch offboarding | Queue multiple users and process sequentially |
+| 📅 Scheduled tasks | Schedule backup, offboarding, or Full Run for later |
+| 🚀 Full Run | One-click: backup → offboarding → combined email summary |
+| ✏️ Email template | Customizable notification email (subject + HTML body) |
+| 📋 Custom checklist | Add persistent custom checklist items (localStorage) |
+| 🌙 Dark mode | Toggle dark/light theme, persisted in localStorage |
+| 🌎 EN / ES | Full English and Spanish UI |
 
-### Backup
-- **OneDrive backup** — recursive full backup of all files and folders to Azure Blob Storage
-- **Email backup** — all mail folders with full message content (paginated)
-- **Parallel processing** — 15 concurrent OneDrive uploads, 30 concurrent email uploads
-- **Smart deduplication** — lists existing blobs in bulk before uploading, skips already-backed-up files
-- **Real-time progress** — files/emails processed, MB transferred, speed (MB/s or emails/s), ETA
-- **Cancel/Resume** — stop backup mid-process, resume later (skips existing files automatically)
-- **Retry logic** — automatic retry with exponential backoff for transient blob auth failures
-
-### Offboarding Actions
-- **Remove licenses** — strips all M365 licenses from the user
-- **Remove groups** — removes from Azure AD security groups + attempts Exchange distribution lists via Exchange Online REST API
-- **Block sign-in** — disables the user account immediately
-- **Confirmation gate** — requires checkbox confirmation before executing irreversible actions
-
-### Notifications
-- **Email notification** via Microsoft Graph (Mail.Send)
-- **Multiple recipients** — add recipients by searching the directory or typing email addresses
-- **Chips UI** — visual email badges with add/remove functionality
-
-### History
-- **Offboarding log** stored in Azure Blob Storage (`_history/log.json`)
-- **Detailed records** — type (backup/offboarding), user, date, actions performed, reason, admin, status, notes
-- **History tab** with sortable table view
+---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│                   Browser (SPA)                  │
-│  ┌──────────┐  ┌──────────┐  ┌───────────────┐  │
-│  │  MSAL.js │  │ Graph API│  │  Blob Storage │  │
-│  │  (login) │  │ (users,  │  │  (SharedKey   │  │
-│  │          │  │  mail,   │  │   auth from   │  │
-│  │          │  │  drive)  │  │   browser)    │  │
-│  └────┬─────┘  └────┬─────┘  └───────┬───────┘  │
-│       │              │                │          │
-├───────┼──────────────┼────────────────┼──────────┤
-│       │     Azure Static Web App API             │
-│       │  ┌──────────────────────────────┐        │
-│       │  │  /api/token (client creds)   │        │
-│       │  │  /api/removeExchangeMember   │        │
-│       │  └──────────────────────────────┘        │
-└───────┼──────────────┼────────────────┼──────────┘
-        │              │                │
-   Azure AD      Graph API     Blob Storage
-   (Auth)        (M365 data)   (Backups)
+index.html               ← Single-page app (all logic inline)
+_deploy/index.html       ← Copy deployed to Azure Static Web Apps
+api/                     ← Azure Functions (Node.js) — Graph token proxy
+  token/index.js         ← Returns app-level Graph token (client credentials)
+staticwebapp.config.json ← SWA routing config
+setup.sh / setup.bat     ← Interactive setup scripts to inject your credentials
 ```
+
+**Stack:** Vanilla JS + HTML/CSS · MSAL.js · Microsoft Graph API · Azure Blob Storage · Azure Static Web Apps · Azure Functions
+
+---
 
 ## Prerequisites
 
-- **Azure subscription** with:
-  - Azure Static Web App
-  - Azure Storage Account with a blob container
-- **Azure AD App Registration** with these permissions (all with admin consent):
+- Azure Subscription with permissions to create resources
+- Microsoft 365 tenant with Global Admin (or equivalent)
+- Node.js v16+ and npm
+- SWA CLI: `npm install -g @azure/static-web-apps-cli`
 
-| Permission | Type | Purpose |
-|---|---|---|
-| User.ReadWrite.All | Delegated + Application | Read/write user profiles |
-| Directory.ReadWrite.All | Delegated + Application | Manage directory objects |
-| Group.ReadWrite.All | Delegated + Application | Manage group memberships |
-| Files.Read.All | Delegated + Application | Read OneDrive files |
-| Mail.Read | Delegated + Application | Read mailboxes |
-| Mail.Send | Application | Send notification emails |
-| Exchange.ManageAsApp | Application | Manage Exchange distribution lists |
-
-- **Global Administrator** or **User Administrator** role for the admin account
+---
 
 ## Setup
 
-### 1. Clone and configure
+### 1 — Azure AD App Registration
+
+1. [portal.azure.com](https://portal.azure.com) → Azure Active Directory → App registrations → **New registration**
+2. Name: `Offboarding App` · Single tenant · Redirect URI: your SWA URL
+3. Note **Application (client) ID** → `CLIENT_ID` and **Directory (tenant) ID** → `TENANT_ID`
+4. Add **Microsoft Graph** API permissions:
+
+| Permission | Type |
+|------------|------|
+| `User.Read` | Delegated |
+| `User.Read.All` | Application |
+| `User.ReadWrite.All` | Application |
+| `Directory.Read.All` | Application |
+| `Directory.ReadWrite.All` | Application |
+| `Mail.ReadWrite` | Application |
+| `Files.ReadWrite.All` | Application |
+| `LicenseAssignment.ReadWrite.All` | Application |
+| `Mail.Send` | Delegated |
+
+5. **Grant admin consent** for all permissions
+6. Certificates & secrets → New client secret → copy value (for Azure Functions)
+
+### 2 — Azure Functions (Token Proxy)
+
+1. Create Azure Function App (Node.js 18, Consumption)
+2. Add Application Settings:
+   - `CLIENT_ID` = your App Registration Client ID
+   - `CLIENT_SECRET` = your client secret
+   - `TENANT_ID` = your Azure AD Tenant ID
+3. Deploy the `api/` folder
+4. Note the Function App URL → `API_URL`
+
+### 3 — Azure Blob Storage
+
+1. Create Storage Account → create container (e.g. `offboarding-backups`) — **Private** access
+2. Shared Access Signature → configure:
+   - Services: **Blob** · Resource types: **Container + Object**
+   - Permissions: Read, Write, Delete, List, Add, Create, Update, Process
+   - Protocol: **HTTPS only** · Set expiry date
+3. Generate SAS → copy the **SAS token** (starts with `sv=...`)
+
+### 4 — Configure index.html
+
+Run the interactive setup script:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Offboarding-module.git
-cd Offboarding-module
+# macOS / Linux
+bash setup.sh
+
+# Windows
+setup.bat
 ```
 
-Edit `index.html` and replace the placeholder values:
-```javascript
-const CLIENT_ID='YOUR_CLIENT_ID';
-const TENANT_ID='YOUR_TENANT_ID';
-const STORAGE_ACCOUNT='YOUR_STORAGE_ACCOUNT';
-const STORAGE_KEY='YOUR_STORAGE_KEY';
-const CONTAINER='offboarding-backups';
-```
+You will be prompted for:
+- Azure AD Client ID
+- Azure AD Tenant ID
+- Storage Account name
+- SAS Token
+- Container name
+- Azure Functions API URL
 
-### 2. Configure Azure App Registration
-
-1. Go to **Azure Portal** > **App registrations** > **New registration**
-2. Set redirect URI as **SPA**: `https://your-app.azurestaticapps.net`
-3. Enable **Access tokens** under Authentication > Implicit grant
-4. Add all API permissions listed above
-5. Create a **Client Secret** under Certificates & secrets
-6. Click **Grant admin consent**
-
-### 3. Configure Azure Static Web App environment variables
-
-In the Azure Portal, go to your Static Web App > **Configuration** > **Application settings**:
-
-| Setting | Value |
-|---|---|
-| `CLIENT_ID` | Your App Registration client ID |
-| `CLIENT_SECRET` | Your App Registration client secret |
-| `TENANT_ID` | Your Azure AD tenant ID |
-
-### 4. Deploy
+### 5 — Deploy to Azure Static Web Apps
 
 ```bash
+mkdir -p _deploy
+cp index.html _deploy/index.html
 npx @azure/static-web-apps-cli deploy \
-  --app-location . \
-  --output-location . \
-  --api-location ./api \
-  --deployment-token YOUR_DEPLOYMENT_TOKEN \
-  --env production
+  --app-location ./_deploy \
+  --env production \
+  --deployment-token YOUR_SWA_DEPLOYMENT_TOKEN
 ```
 
-### 5. Exchange Online (optional, for distribution list removal)
+Get your deployment token from: Static Web App → **Manage deployment token**
 
-1. Add **Exchange.ManageAsApp** application permission
-2. In **Entra ID** > **Roles and administrators**, assign **Exchange Recipient Administrator** to the app
+---
 
-## Blob Storage Structure
+## Local Development
 
-```
-offboarding-backups/
-├── _history/
-│   └── log.json              ← All offboarding/backup records
-└── [User Display Name]/
-    ├── OneDrive/
-    │   ├── Documents/
-    │   │   └── file.pdf
-    │   └── Desktop/
-    │       └── notes.txt
-    └── Emails/
-        ├── Inbox/
-        │   └── 2026-01-15_Meeting notes.eml
-        ├── Sent Items/
-        │   └── 2026-01-14_Re Project update.eml
-        └── [Other Folders]/
+```bash
+npx @azure/static-web-apps-cli start . --port 4280
 ```
 
-## Tech Stack
+Add `http://localhost:4280` to your App Registration redirect URIs.
 
-- **Frontend**: Vanilla JavaScript, HTML5, CSS3 (no frameworks)
-- **Auth**: MSAL.js 2.x (popup flow)
-- **APIs**: Microsoft Graph API v1.0, Azure Blob Storage REST API, Exchange Online REST API
-- **Hosting**: Azure Static Web Apps (with built-in Azure Functions for API)
-- **Crypto**: Web Crypto API (HMAC-SHA256 for Blob Storage SharedKey auth)
+---
 
 ## Security Notes
 
-> **Important**: The Storage Account access key is currently embedded in the client-side HTML. For production use, consider:
-> - Moving blob operations to the Azure Functions API backend
-> - Using SAS tokens with limited scope and expiration
-> - Implementing Azure Managed Identity
+- **Never commit real credentials** — use `setup.sh` / `setup.bat` to inject them locally
+- Rotate the SAS token periodically and set a reasonable expiry
+- Store the Azure Function client secret in **Azure Key Vault** for production
+- All actions are logged to `_audit/trail.json` in blob storage
+
+---
 
 ## License
 
-MIT
+MIT — Internal tool, JBKnowledge IT Department.

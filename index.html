@@ -4,18 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Offboarding App - JBKnowledge IT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@azure/msal-browser@2.38.3/lib/msal-browser.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;min-height:100vh;}
-.header{background:linear-gradient(135deg,#0078d4,#005a9e);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,120,212,0.3);}
+body{font-family:'Inter','Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;min-height:100vh;}
+.header{background:linear-gradient(135deg,#0f172a 0%,#1e40af 100%);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(15,23,42,0.4);}
 .header-left{display:flex;align-items:center;gap:14px;}
-.header-icon{width:38px;height:38px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.header-title h1{color:white;font-size:18px;font-weight:700;}
-.header-title p{color:rgba(255,255,255,0.7);font-size:12px;}
-.user-pill{background:rgba(255,255,255,0.15);color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;}
+.header-icon{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;backdrop-filter:blur(4px);}
+.header-title h1{color:white;font-size:18px;font-weight:700;letter-spacing:-0.3px;}
+.header-title p{color:rgba(255,255,255,0.6);font-size:12px;}
+.user-pill{background:rgba(255,255,255,0.12);color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,0.15);}
 .container{max-width:1200px;margin:0 auto;padding:28px 24px 64px;}
-.card{background:white;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.06);padding:26px;margin-bottom:20px;}
+.card{background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.04);border:1px solid #e8ecf0;padding:26px;margin-bottom:20px;transition:box-shadow 0.2s;}
+.card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
 .card-title{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
 .icon-box{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
 .ib-blue{background:#e8f3fd;} .ib-green{background:#e6f9f0;} .ib-red{background:#fdecea;} .ib-purple{background:#f3eafd;} .ib-orange{background:#fff3e0;}
@@ -25,19 +28,35 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 .login-center h2{font-size:24px;font-weight:700;margin-bottom:10px;}
 .login-center p{color:#666;font-size:14px;max-width:400px;margin:0 auto 28px;line-height:1.7;}
 /* BUTTONS */
-.btn{padding:10px 22px;border-radius:8px;font-size:14px;cursor:pointer;border:none;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
-.btn-ms{background:white;color:#1a1a2e;border:1.5px solid #ddd;font-size:15px;padding:12px 28px;}
-.btn-ms:hover{background:#f5f5f5;border-color:#0078d4;}
-.btn-primary{background:#0078d4;color:white;}
-.btn-primary:hover{background:#006bc1;box-shadow:0 4px 12px rgba(0,120,212,0.3);}
-.btn-primary:disabled{background:#a8cff0;cursor:not-allowed;}
+.btn{padding:10px 22px;border-radius:10px;font-size:14px;cursor:pointer;border:none;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;letter-spacing:-0.1px;}
+.btn-ms{background:white;color:#1a1a2e;border:1.5px solid #e0e0e0;font-size:15px;padding:13px 32px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.btn-ms:hover{background:#f8faff;border-color:#0078d4;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,120,212,0.15);}
+.btn-primary{background:linear-gradient(135deg,#0078d4,#0063b1);color:white;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,120,212,0.35);}
+.btn-primary:disabled{background:#a8cff0;cursor:not-allowed;transform:none;}
 .btn-danger{background:linear-gradient(135deg,#d93025,#b31412);color:white;}
-.btn-danger:hover{box-shadow:0 4px 16px rgba(217,48,37,0.35);}
-.btn-danger:disabled{background:#e8a09a;cursor:not-allowed;}
+.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(217,48,37,0.35);}
+.btn-danger:disabled{background:#e8a09a;cursor:not-allowed;transform:none;}
 .btn-success{background:linear-gradient(135deg,#1e8e3e,#157a32);color:white;}
-.btn-success:hover{box-shadow:0 4px 12px rgba(30,142,62,0.3);}
-.btn-success:disabled{background:#a8d5b5;cursor:not-allowed;}
-.btn-full{width:100%;justify-content:center;padding:13px;}
+.btn-success:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,142,62,0.3);}
+.btn-success:disabled{background:#a8d5b5;cursor:not-allowed;transform:none;}
+.btn-full{width:100%;justify-content:center;padding:14px;}
+/* LANG TOGGLE */
+.lang-toggle{display:flex;gap:6px;justify-content:center;margin-bottom:20px;}
+.lang-btn{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #e0e0e0;background:white;color:#555;transition:all 0.2s;}
+.lang-btn.active{background:#0f172a;color:white;border-color:#0f172a;}
+/* DISCLAIMER */
+.disclaimer{background:#f8faff;border:1.5px solid #dbeafe;border-radius:12px;padding:16px 20px;margin-top:20px;font-size:13px;color:#475569;line-height:1.7;text-align:left;}
+.disclaimer strong{color:#1e40af;display:block;margin-bottom:4px;}
+.feature-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:20px 0;}
+.feature-card{background:#f8faff;border:1.5px solid #e8f0fe;border-radius:12px;padding:14px;text-align:center;font-size:12px;color:#475569;}
+.feature-card .fc-icon{font-size:24px;margin-bottom:6px;}
+.feature-card strong{display:block;font-size:13px;color:#1e293b;margin-bottom:2px;}
+/* ERROR LOG BOX */
+.error-log-box{background:#0d1117;border-radius:10px;padding:14px 16px;margin-top:12px;}
+.error-log-box pre{font-family:Consolas,monospace;font-size:12px;color:#f85149;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:10px;}
+.btn-copy{background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;}
+.btn-copy:hover{background:#30363d;}
 /* SEARCH */
 .search-row{display:flex;gap:10px;}
 .input{flex:1;padding:11px 16px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;transition:border 0.2s;}
@@ -88,8 +107,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 .step-status.error{color:#d93025;}
 .step-body{padding:14px 16px;border-top:1px solid #f5f5f5;display:none;}
 .step-body.show{display:block;}
-.progress-wrap{background:#f0f0f0;border-radius:6px;height:6px;margin:8px 0 10px;overflow:hidden;}
-.progress-bar{height:100%;background:linear-gradient(90deg,#0078d4,#40a9ff);border-radius:6px;transition:width 0.4s;width:0%;}
+.progress-wrap{background:#e8eef4;border-radius:8px;height:14px;margin:10px 0 12px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,0.08);}
+.progress-bar{height:100%;background:linear-gradient(90deg,#0078d4,#40a9ff);border-radius:8px;transition:width 0.5s ease;width:0%;}
+.progress-bar.active{background:linear-gradient(90deg,#0f172a 0%,#1e40af 30%,#3b82f6 50%,#1e40af 70%,#0f172a 100%);background-size:200% 100%;animation:shimmer 1.8s infinite linear;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .log{background:#0d1117;border-radius:8px;padding:10px 14px;max-height:160px;overflow-y:auto;margin-top:8px;}
 .log p{font-family:Consolas,monospace;font-size:12px;line-height:1.7;margin:0;color:#8b949e;}
 .log p.ok{color:#3fb950;} .log p.err{color:#f85149;} .log p.info{color:#58a6ff;} .log p.warn{color:#e3b341;}
@@ -112,6 +133,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 .confirm-label{display:flex;align-items:flex-start;gap:10px;margin-top:10px;cursor:pointer;font-size:13px;color:#555;}
 .confirm-label input{margin-top:3px;cursor:pointer;width:16px;height:16px;}
 /* SUMMARY */
+.how-to-steps{display:flex;flex-direction:column;gap:10px;}.how-to-step{display:flex;align-items:flex-start;gap:12px;background:#f8fafc;border:1px solid #e8ecf0;border-radius:10px;padding:12px 14px;}.ht-num{min-width:28px;height:28px;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}.ht-content{display:flex;flex-direction:column;gap:3px;}.ht-content strong{font-size:14px;color:#0f172a;font-weight:600;}.ht-content span{font-size:13px;color:#64748b;line-height:1.4;}.how-to-card .card-title{margin-bottom:0;}
+.custom-check-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f0f0f0;}.custom-check-item label{flex:1;font-size:13px;cursor:pointer;color:#334155;}.custom-check-item input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#0078d4;}.custom-check-section{border-top:1px solid #e8ecf0;margin-top:14px;padding-top:12px;}
+.batch-panel{border:2px solid #1e40af !important;}.batch-user-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;}.batch-avatar{width:30px;height:30px;border-radius:50%;background:#1e40af;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}.batch-log{display:none;margin-top:12px;background:#f8fafc;border:1px solid #e8ecf0;border-radius:8px;padding:10px;max-height:200px;overflow-y:auto;font-family:monospace;}
+.dashboard-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}.stat-card{background:white;border:1.5px solid #e8ecf0;border-radius:14px;padding:18px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.04);transition:transform 0.15s;}.stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08);}.stat-icon{font-size:24px;margin-bottom:6px;}.stat-num{font-size:28px;font-weight:800;color:#0f172a;line-height:1;}.stat-label{font-size:12px;color:#64748b;margin-top:6px;font-weight:500;}@media(max-width:640px){.dashboard-stats{grid-template-columns:repeat(2,1fr);}}
+.history-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}.history-filters .input{height:36px;font-size:13px;}.history-filters select{height:36px;font-size:13px;padding:4px 10px;border:1.5px solid #dde3ea;border-radius:8px;background:white;color:#333;}
 .summary-ok{background:linear-gradient(135deg,#e6f9f0,#d4f5e4);border:1.5px solid #1e8e3e;border-radius:12px;padding:24px;text-align:center;}
 .summary-err{background:#fdecea;border:1.5px solid #d93025;border-radius:12px;padding:24px;text-align:center;}
 .summary-ok h3{color:#1e8e3e;font-size:20px;font-weight:700;margin-bottom:8px;}
@@ -156,6 +182,38 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 @keyframes slideOut{from{opacity:1;}to{transform:translateX(100%);opacity:0;}}
 .size-estimate{background:#f0f8ff;border:1.5px solid #b3d9f7;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;}
 .size-estimate strong{color:#0078d4;}
+/* DARK MODE */
+[data-theme="dark"] body{background:#0f172a;color:#e2e8f0;}
+[data-theme="dark"] .card{background:#1e293b;border-color:#334155;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
+[data-theme="dark"] .card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+[data-theme="dark"] .card-title{color:#f1f5f9;}
+[data-theme="dark"] .input,[data-theme="dark"] textarea,[data-theme="dark"] select{background:#0f172a;color:#e2e8f0;border-color:#334155;}
+[data-theme="dark"] .input::placeholder,[data-theme="dark"] textarea::placeholder{color:#475569;}
+[data-theme="dark"] .option-check{background:#1e293b;border-color:#334155;color:#e2e8f0;}
+[data-theme="dark"] .option-check:hover{background:#263246;}
+[data-theme="dark"] .confirm-box{background:#1e293b;border-color:#e65100;color:#e2e8f0;}
+[data-theme="dark"] table{color:#e2e8f0;}
+[data-theme="dark"] th{background:#1e293b;color:#94a3b8;border-color:#334155;}
+[data-theme="dark"] td{border-color:#334155;}
+[data-theme="dark"] tr:hover td{background:#263246;}
+[data-theme="dark"] .stat-card{background:#1e293b;border-color:#334155;}
+[data-theme="dark"] .stat-num{color:#f1f5f9;}
+[data-theme="dark"] .stat-label{color:#94a3b8;}
+[data-theme="dark"] .lang-btn{background:#1e293b;color:#94a3b8;border-color:#334155;}
+[data-theme="dark"] .lang-btn.active{background:#e2e8f0;color:#0f172a;border-color:#e2e8f0;}
+[data-theme="dark"] .disclaimer{background:#1e293b;border-color:#334155;color:#94a3b8;}
+[data-theme="dark"] .empty-state{color:#64748b;}
+[data-theme="dark"] .history-filters .input{background:#1e293b;color:#e2e8f0;border-color:#475569;}
+[data-theme="dark"] .tab-bar{background:#0f172a;border-color:#334155;}
+[data-theme="dark"] .tab-btn{color:#94a3b8;}
+[data-theme="dark"] .tab-btn.active{color:#f1f5f9;border-color:#0078d4;}
+[data-theme="dark"] .btn-ms{background:#1e293b;color:#e2e8f0;border-color:#334155;}
+[data-theme="dark"] label{color:#cbd5e1;}
+[data-theme="dark"] .size-estimate{background:#1e293b;border-color:#334155;color:#94a3b8;}
+[data-theme="dark"] .size-estimate strong{color:#60a5fa;}
+[data-theme="dark"] .error-log-box{background:#1a1010;border-color:#7f1d1d;}
+[data-theme="dark"] .summary-ok{background:#0f2318;border-color:#166534;}
+[data-theme="dark"] .summary-err{background:#1a1010;border-color:#7f1d1d;}
 </style>
 </head>
 <body>
@@ -169,8 +227,15 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
       <p>JBKnowledge · Information Technology</p>
     </div>
   </div>
-  <div id="userPill" class="user-pill hidden">
-    <span>👤</span><span id="userPillText"></span>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button id="darkModeBtn" onclick="toggleDarkMode()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:16px;line-height:1;" title="Toggle dark mode">🌙</button>
+    <div class="lang-toggle" id="headerLangToggle" style="display:none;margin-bottom:0;">
+      <button class="lang-btn active" id="btnLangEnH" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lang-btn" id="btnLangEsH" onclick="setLang('es')">🇦🇷 ES</button>
+    </div>
+    <div id="userPill" class="user-pill hidden">
+      <span>👤</span><span id="userPillText"></span>
+    </div>
   </div>
 </div>
 
@@ -178,15 +243,28 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 
   <!-- LOGIN -->
   <div id="loginSection">
-    <div class="card">
+    <div class="card" style="max-width:560px;margin:0 auto;">
       <div class="login-center">
-        <div class="big">🔐</div>
-        <h2>IT Offboarding Portal</h2>
-        <p>Sign in with your JBKnowledge admin account to access the offboarding tools.</p>
+        <div class="lang-toggle">
+          <button class="lang-btn active" id="btnLangEn" onclick="setLang('en')">🇺🇸 English</button>
+          <button class="lang-btn" id="btnLangEs" onclick="setLang('es')">🇦🇷 Español</button>
+        </div>
+        <div class="big">🔒</div>
+        <h2 id="loginTitle">IT Offboarding Portal</h2>
+        <p id="loginSubtitle" style="color:#64748b;font-size:14px;max-width:400px;margin:0 auto 24px;line-height:1.7;">Sign in with your JBKnowledge admin account to access the offboarding tools.</p>
         <button class="btn btn-ms" onclick="signIn()">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/20px-Microsoft_logo.svg.png" style="width:18px">
-          Sign in with Microsoft
+          <span id="loginBtnText">Sign in with Microsoft</span>
         </button>
+        <div class="feature-cards" style="margin-top:28px;">
+          <div class="feature-card"><div class="fc-icon">🔍</div><strong id="fc1">Search Users</strong><span id="fc1d">Find any M365 account</span></div>
+          <div class="feature-card"><div class="fc-icon">📦</div><strong id="fc2">Backup Data</strong><span id="fc2d">OneDrive & Emails → Azure</span></div>
+          <div class="feature-card"><div class="fc-icon">⚙️</div><strong id="fc3">Offboard</strong><span id="fc3d">Remove licenses, block sign-in</span></div>
+        </div>
+        <div class="disclaimer">
+          <strong id="disclaimerTitle">ℹ️ What is this tool?</strong>
+          <span id="disclaimerText">This tool allows JBKnowledge IT admins to securely offboard Microsoft 365 users: back up their OneDrive and emails to Azure Blob Storage, remove licenses and group memberships, and block sign-in — all in one auditable workflow. Requires Global Admin or equivalent permissions.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -196,20 +274,78 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 
     <!-- TABS -->
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('offboarding')">⚙️ Offboarding</button>
-      <button class="tab" onclick="switchTab('history')">📋 History</button>
+      <button class="tab active" id="tabBtnOff" onclick="switchTab('offboarding')">⚙️ Offboarding</button>
+      <button class="tab" id="tabBtnHist" onclick="switchTab('history')">📋 History</button>
     </div>
 
     <!-- OFFBOARDING TAB -->
     <div id="tabOffboarding">
 
+      <!-- HOW-TO GUIDE -->
+      <div class="card how-to-card" id="howToCard">
+        <div class="card-title" style="cursor:pointer;user-select:none;" onclick="toggleHowTo()">
+          <div class="icon-box ib-blue">📖</div>
+          <span id="howToTitle">How to use this tool</span>
+          <span id="howToChevron" style="margin-left:auto;font-size:18px;transition:transform 0.2s;">▾</span>
+        </div>
+        <div id="howToBody" style="display:none;padding-top:8px;">
+          <p id="howToIntro" style="color:#64748b;font-size:13px;margin:0 0 16px;">Follow these steps in order to safely offboard a Microsoft 365 user:</p>
+          <div class="how-to-steps">
+            <div class="how-to-step">
+              <div class="ht-num">1</div>
+              <div class="ht-content">
+                <strong id="ht1t">Search the user</strong>
+                <span id="ht1d">Type the employee's name or email below and click Search. Verify the account before proceeding.</span>
+              </div>
+            </div>
+            <div class="how-to-step">
+              <div class="ht-num">2</div>
+              <div class="ht-content">
+                <strong id="ht2t">Review the checklist</strong>
+                <span id="ht2d">The pre-offboarding checklist will auto-run and show OneDrive size, mailbox count, group memberships, and license status.</span>
+              </div>
+            </div>
+            <div class="how-to-step">
+              <div class="ht-num">3</div>
+              <div class="ht-content">
+                <strong id="ht3t">Run the backup</strong>
+                <span id="ht3d">Click <em>Start Backup</em> to copy OneDrive files and emails to Azure Blob Storage. Already-uploaded files are skipped automatically.</span>
+              </div>
+            </div>
+            <div class="how-to-step">
+              <div class="ht-num">4</div>
+              <div class="ht-content">
+                <strong id="ht4t">Execute offboarding</strong>
+                <span id="ht4d">Select which actions to apply (block sign-in, remove licenses, remove groups), add notes, then click <em>Execute Offboarding</em>. A confirmation email will be sent to IT.</span>
+              </div>
+            </div>
+          </div>
+          <p id="howToWarn" style="color:#94a3b8;font-size:12px;margin:12px 0 0;border-top:1px solid #e8ecf0;padding-top:10px;">⚠️ This action is irreversible once sign-in is blocked. Always complete the backup before executing offboarding.</p>
+        </div>
+      </div>
+
       <!-- SEARCH -->
       <div class="card">
-        <div class="card-title"><div class="icon-box ib-blue">🔍</div>Search User</div>
+        <div class="card-title"><div class="icon-box ib-blue">🔍</div><span id="searchTitle">Search User</span></div>
         <div class="search-row">
           <input class="input" id="searchInput" type="text" placeholder="Search by name, last name or email" onkeydown="if(event.key==='Enter')searchUser()"/>
           <button class="btn btn-primary" id="searchBtn" onclick="searchUser()">Search</button>
         </div>
+      </div>
+
+      <!-- BATCH PANEL -->
+      <div id="batchPanel" class="card hidden batch-panel">
+        <div class="card-title"><div class="icon-box ib-blue">👥</div><span id="batchTitle">Batch Queue</span> — <span id="batchCount">0</span> users</div>
+        <div id="batchList" style="margin:8px 0 12px;min-height:20px;"></div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="batchChkBackup" checked> <span id="batchOptBackup">📁 Backup (OneDrive + Emails)</span></label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="batchChkOffboard"> <span id="batchOptOffboard">⚙️ Execute Offboarding</span></label>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" id="runBatchBtn" onclick="runBatch()">▶ Run Batch</button>
+          <button class="btn" onclick="batchQueue=[];renderBatchPanel();document.getElementById('batchPanel').classList.add('hidden');" style="background:#f1f5f9;color:#334155;border:1.5px solid #dde3ea;" id="batchClearBtn">✕ Clear</button>
+        </div>
+        <div id="batchLog" class="batch-log"></div>
       </div>
 
       <!-- USER INFO + CHECKLIST -->
@@ -226,6 +362,14 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
           <div class="card-title"><div class="icon-box ib-orange">✅</div>Pre-Offboarding Checklist</div>
           <div class="checklist" id="checklist"></div>
           <div id="sizeEstimate" class="hidden"></div>
+          <div class="custom-check-section">
+            <div style="font-size:13px;font-weight:600;color:#334155;margin-bottom:8px;" id="customCheckTitle">📋 Custom Items</div>
+            <div id="customCheckList"></div>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <input id="customCheckInput" class="input" placeholder="Add item (e.g. Return laptop)..." style="flex:1;height:34px;font-size:13px;" onkeydown="if(event.key==='Enter')addCustomCheck()">
+              <button class="btn btn-primary" onclick="addCustomCheck()" style="padding:6px 14px;font-size:13px;">+ Add</button>
+            </div>
+          </div>
         </div>
 
         <!-- TWO COLUMNS -->
@@ -240,6 +384,24 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
             </div>
             <div style="background:#f0f8ff;border-radius:8px;padding:12px;font-size:12px;color:#0078d4;margin-bottom:16px;">
               💾 Destination: <strong>offboarding-backups / [User Name] /</strong>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0;" onclick="toggleBackupNotify()">
+                <label style="cursor:pointer;margin:0;font-size:13px;font-weight:500;" id="backupNotifyLbl">📧 Notify when done (optional)</label>
+                <span id="backupNotifyChevron" style="font-size:14px;color:#64748b;transition:transform 0.2s;">▾</span>
+              </div>
+              <div id="backupNotifySection" style="display:none;margin-top:8px;">
+                <div id="backupEmailChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;"></div>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" id="backupEmailInput" class="input" style="flex:1;font-size:13px;" placeholder="Search by name or type email..." onkeydown="if(event.key==='Enter'){event.preventDefault();addBackupEmail();}">
+                  <button type="button" class="btn btn-primary" style="padding:6px 12px;font-size:16px;line-height:1;" onclick="addBackupEmail()">+</button>
+                </div>
+                <div id="backupEmailSuggestions" style="display:none;"></div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px;" id="backupScheduleLbl">📅 Schedule backup (optional)</label>
+              <input type="datetime-local" id="backupScheduleDate" class="input">
             </div>
             <button class="btn btn-success btn-full" id="backupBtn" onclick="runBackup()">▶ Start Backup</button>
           </div>
@@ -277,16 +439,51 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
               </div>
               <div id="emailSuggestions" style="display:none;"></div>
             </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px 0;" onclick="toggleEmailTemplate()">
+                <label style="cursor:pointer;margin:0;font-weight:500;" id="emailTplLabel">✏️ Edit Email Template</label>
+                <span id="emailTplChevron" style="font-size:16px;transition:transform 0.2s;color:#64748b;">▾</span>
+              </div>
+              <div id="emailTplEditor" style="display:none;background:#f8fafc;border:1px solid #e8ecf0;border-radius:10px;padding:14px;">
+                <label style="font-size:12px;color:#64748b;margin-bottom:4px;display:block;" id="emailTplSubjectLbl">Subject</label>
+                <input id="emailTplSubject" class="input" style="margin-bottom:12px;">
+                <label style="font-size:12px;color:#64748b;margin-bottom:4px;display:block;" id="emailTplBodyLbl">Body (HTML)</label>
+                <textarea id="emailTplBody" class="input" style="min-height:150px;font-family:monospace;font-size:12px;resize:vertical;"></textarea>
+                <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                  <button class="btn btn-primary" onclick="saveEmailTemplate()" id="emailTplSaveBtn">💾 Save Template</button>
+                  <button class="btn" onclick="resetEmailTemplate()" id="emailTplResetBtn" style="background:#fff3e0;color:#e65100;border:1px solid #ffcc80;">↩ Reset to Default</button>
+                </div>
+                <div id="emailTplStatus" style="font-size:12px;margin-top:8px;color:#2e7d32;display:none;">✅ Template saved!</div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label id="scheduleLbl">📅 Schedule for later <span style="color:#94a3b8;font-weight:400;">(optional — leave blank to run immediately)</span></label>
+              <input type="datetime-local" id="scheduleDate" class="input">
+            </div>
             <div class="confirm-box">
               <strong>⚠️ Confirm before proceeding</strong><br>
               These actions affect the user's Microsoft 365 account immediately.
               <label class="confirm-label">
-                <input type="checkbox" id="confirmOffboard" onchange="document.getElementById('offboardBtn').disabled=!this.checked">
+                <input type="checkbox" id="confirmOffboard" onchange="document.getElementById('offboardBtn').disabled=!this.checked;const frb=document.getElementById('fullRunBtn');if(frb)frb.disabled=!this.checked;">
                 I confirm eDiscovery backup is complete (or not required)
               </label>
             </div>
             <button class="btn btn-danger btn-full" id="offboardBtn" disabled onclick="runOffboarding()">🚀 Execute Offboarding</button>
           </div>
+        </div>
+
+        <!-- FULL RUN CARD -->
+        <div class="card" id="fullRunCard" style="border:2px solid #0078d4;background:#f0f8ff;">
+          <div class="card-title"><div class="icon-box ib-blue">🚀</div><span id="fullRunTitle">Full Run — Backup + Offboarding</span></div>
+          <p style="font-size:13px;color:#64748b;margin-bottom:16px;" id="fullRunDesc">Runs backup first, then executes offboarding. Uses the options selected in each section above.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+            <button class="btn btn-primary" id="fullRunBtn" onclick="runFullRun()" disabled>🚀 Run Full Run</button>
+            <div style="flex:1;min-width:200px;">
+              <label style="font-size:12px;color:#64748b;display:block;margin-bottom:4px;" id="fullRunScheduleLbl">📅 Or schedule for later (optional)</label>
+              <input type="datetime-local" id="fullRunScheduleDate" class="input">
+            </div>
+          </div>
+          <p style="font-size:12px;color:#94a3b8;margin-top:10px;" id="fullRunHint">Select a user and confirm eDiscovery backup to enable Full Run.</p>
         </div>
 
         <!-- PROGRESS STEPS -->
@@ -303,10 +500,38 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;mi
 
     <!-- HISTORY TAB -->
     <div id="tabHistory" class="hidden">
+      <div class="dashboard-stats" id="dashStats">
+        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-num" id="statTotal">—</div><div class="stat-label" id="statTotalLabel">Total Actions</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-num" id="statBackups">—</div><div class="stat-label" id="statBackupsLabel">Backups</div></div>
+        <div class="stat-card"><div class="stat-icon">🚀</div><div class="stat-num" id="statOffboardings">—</div><div class="stat-label" id="statOffboardingsLabel">Offboardings</div></div>
+        <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num" id="statMonth">—</div><div class="stat-label" id="statMonthLabel">This Month</div></div>
+      </div>
       <div class="card">
-        <div class="card-title"><div class="icon-box ib-purple">📋</div>Offboarding History</div>
+        <div class="card-title"><div class="icon-box ib-purple">📋</div><span id="histTitle">Offboarding History</span></div>
+        <div class="history-filters" id="histFilters">
+          <input id="histSearch" class="input" placeholder="Filter by user or email..." style="max-width:200px;">
+          <select id="histTypeFilter" class="input" style="max-width:160px;">
+            <option value="" id="histOptAll">All types</option>
+            <option value="backup">Backup</option>
+            <option value="offboarding">Offboarding</option>
+          </select>
+          <input id="histDateFrom" type="date" class="input" title="From" style="max-width:150px;">
+          <input id="histDateTo" type="date" class="input" title="To" style="max-width:150px;">
+          <button class="btn btn-primary" id="histFilterBtn" onclick="loadHistory()" style="padding:6px 16px;font-size:13px;">🔍 Filter</button>
+          <button class="btn" id="histExportBtn" onclick="exportHistoryCSV()" style="padding:6px 16px;font-size:13px;background:#f1f5f9;color:#334155;border:1.5px solid #dde3ea;">📥 Export CSV</button>
+        </div>
         <div id="historyContent">
           <div class="empty-state"><div class="es-icon">📭</div><p>Loading history...</p></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:0;">
+        <div class="card-title" style="cursor:pointer;user-select:none;" onclick="toggleAuditTrail()">
+          <div class="icon-box" style="background:#f3e5f5;color:#7b1fa2;">🔐</div>
+          <span id="auditTitle">Audit Trail</span>
+          <span id="auditChevron" style="margin-left:auto;font-size:18px;transition:transform 0.2s;">▾</span>
+        </div>
+        <div id="auditBody" style="display:none;">
+          <div id="auditContent"><div class="empty-state" style="padding:20px;"><div class="es-icon">🔐</div><p id="auditEmptyMsg">Loading...</p></div></div>
         </div>
       </div>
     </div>
@@ -326,12 +551,55 @@ function toast(type,title,msg,duration=5000){
   setTimeout(()=>{if(t.parentNode){t.style.animation='slideOut 0.3s ease';setTimeout(()=>t.remove(),300);}},duration);
 }
 
-// ⚠️ REPLACE WITH YOUR OWN AZURE VALUES
-const CLIENT_ID='YOUR_CLIENT_ID';             // Azure App Registration → Application (client) ID
-const TENANT_ID='YOUR_TENANT_ID';             // Azure App Registration → Directory (tenant) ID
-const STORAGE_ACCOUNT='YOUR_STORAGE_ACCOUNT'; // Azure Storage Account name
-const STORAGE_KEY='YOUR_STORAGE_KEY';         // Azure Storage Account → Access keys → key1
-const CONTAINER='offboarding-backups';        // Blob Container name (create this in your storage account)
+// ===== LANGUAGE =====
+const T={
+  en:{loginTitle:'IT Offboarding Portal',loginSubtitle:'Sign in with your JBKnowledge admin account to access the offboarding tools.',loginBtnText:'Sign in with Microsoft',disclaimerTitle:'ℹ️ What is this tool?',disclaimerText:'This tool allows JBKnowledge IT admins to securely offboard Microsoft 365 users: back up their OneDrive and emails to Azure Blob Storage, remove licenses and group memberships, and block sign-in — all in one auditable workflow. Requires Global Admin or equivalent permissions.',fc1:'Search Users',fc1d:'Find any M365 account',fc2:'Backup Data',fc2d:'OneDrive & Emails → Azure',fc3:'Offboard',fc3d:'Remove licenses, block sign-in',tabOff:'⚙️ Offboarding',tabHist:'📋 History',howToTitle:'How to use this tool',howToIntro:'Follow these steps in order to safely offboard a Microsoft 365 user:',ht1t:'Search the user',ht1d:'Type the employee\'s name or email below and click Search. Verify the account before proceeding.',ht2t:'Review the checklist',ht2d:'The pre-offboarding checklist will auto-run and show OneDrive size, mailbox count, group memberships, and license status.',ht3t:'Run the backup',ht3d:'Click Start Backup to copy OneDrive files and emails to Azure Blob Storage. Already-uploaded files are skipped automatically.',ht4t:'Execute offboarding',ht4d:'Select which actions to apply (block sign-in, remove licenses, remove groups), add notes, then click Execute Offboarding. A confirmation email will be sent to IT.',howToWarn:'⚠️ This action is irreversible once sign-in is blocked. Always complete the backup before executing offboarding.',searchTitle:'Search User',searchPlaceholder:'Search by name, last name or email',searchBtn:'Search',histTitle:'Offboarding History',histLoading:'Loading...',histEmpty:'No history yet.',histError:'Error loading history.',thType:'Type',thUser:'User',thEmail:'Email',thDate:'Date',thActions:'Actions',thReason:'Reason',thAdmin:'Admin',thStatus:'Status',thNotes:'Notes',badgeBackup:'Backup',badgeOffboarding:'Offboarding',statusComplete:'Complete',statusPartial:'Partial',cancelled:'Cancelled',histFilterPlaceholder:'Filter by user or email...',histAllTypes:'All types',histFilterBtnText:'🔍 Filter',statTotalLabel:'Total Actions',statBackupsLabel:'Backups',statOffboardingsLabel:'Offboardings',statMonthLabel:'This Month',histExportBtn:'📥 Export CSV',batchTitle:'Batch Queue',batchOptBackup:'📁 Backup (OneDrive + Emails)',batchOptOffboard:'⚙️ Execute Offboarding',scheduleLbl:'📅 Schedule for later',customCheckTitle:'📋 Custom Items',customCheckPlaceholder:'Add item (e.g. Return laptop)...',customCheckEmpty:'No custom items yet.',auditTitle:'Audit Trail',auditEmpty:'No audit entries yet.',auditViewAll:'View All',emailTplLabel:'✏️ Edit Email Template',emailTplSubjectLbl:'Subject',emailTplBodyLbl:'Body (HTML)',emailTplSaveBtn:'💾 Save Template',emailTplResetBtn:'↩ Reset to Default',backupNotifyLbl:'📧 Notify when done (optional)',backupScheduleLbl:'📅 Schedule backup (optional)',fullRunTitle:'Full Run — Backup + Offboarding',fullRunDesc:'Runs backup first, then executes offboarding. Uses the options selected in each section above.',fullRunScheduleLbl:'📅 Or schedule for later (optional)',fullRunHint:'Select a user and confirm eDiscovery backup to enable Full Run.'},
+  es:{loginTitle:'Portal de Offboarding IT',loginSubtitle:'Iniciá sesión con tu cuenta de administrador de JBKnowledge para acceder a las herramientas de offboarding.',loginBtnText:'Iniciar sesión con Microsoft',disclaimerTitle:'ℹ️ ¿Para qué sirve esta herramienta?',disclaimerText:'Esta herramienta permite a los administradores IT de JBKnowledge realizar el offboarding de usuarios de Microsoft 365: hacer backup de OneDrive y correos en Azure Blob Storage, eliminar licencias y grupos, y bloquear el inicio de sesión — todo en un flujo auditable. Requiere permisos de Administrador Global.',fc1:'Buscar usuarios',fc1d:'Encontrá cualquier cuenta M365',fc2:'Backup de datos',fc2d:'OneDrive y correos → Azure',fc3:'Offboarding',fc3d:'Quitar licencias, bloquear acceso',tabOff:'⚙️ Offboarding',tabHist:'📋 Historial',howToTitle:'Cómo usar esta herramienta',howToIntro:'Seguí estos pasos en orden para hacer el offboarding seguro de un usuario de Microsoft 365:',ht1t:'Buscar el usuario',ht1d:'Escribí el nombre o email del empleado abajo y hacé clic en Buscar. Verificá la cuenta antes de continuar.',ht2t:'Revisar el checklist',ht2d:'El checklist pre-offboarding se ejecutará automáticamente y mostrará el tamaño de OneDrive, cantidad de emails, grupos y licencias.',ht3t:'Ejecutar el backup',ht3d:'Hacé clic en Iniciar Backup para copiar archivos de OneDrive y emails a Azure Blob Storage. Los archivos ya subidos se omiten automáticamente.',ht4t:'Ejecutar offboarding',ht4d:'Seleccioná las acciones a aplicar (bloquear acceso, quitar licencias, quitar grupos), agregá notas y hacé clic en Ejecutar Offboarding. Se enviará un email de confirmación a IT.',howToWarn:'⚠️ Esta acción es irreversible una vez bloqueado el acceso. Siempre completá el backup antes de ejecutar el offboarding.',searchTitle:'Buscar Usuario',searchPlaceholder:'Buscar por nombre, apellido o email',searchBtn:'Buscar',histTitle:'Historial de Offboarding',histLoading:'Cargando...',histEmpty:'No hay historial aún.',histError:'Error al cargar el historial.',thType:'Tipo',thUser:'Usuario',thEmail:'Email',thDate:'Fecha',thActions:'Acciones',thReason:'Motivo',thAdmin:'Admin',thStatus:'Estado',thNotes:'Notas',badgeBackup:'Backup',badgeOffboarding:'Offboarding',statusComplete:'Completo',statusPartial:'Parcial',cancelled:'Cancelado',histFilterPlaceholder:'Filtrar por usuario o email...',histAllTypes:'Todos los tipos',histFilterBtnText:'🔍 Filtrar',statTotalLabel:'Acciones Totales',statBackupsLabel:'Backups',statOffboardingsLabel:'Offboardings',statMonthLabel:'Este Mes',histExportBtn:'📥 Exportar CSV',batchTitle:'Cola de Batch',batchOptBackup:'📁 Backup (OneDrive + Emails)',batchOptOffboard:'⚙️ Ejecutar Offboarding',scheduleLbl:'📅 Programar para más tarde',customCheckTitle:'📋 Ítems Personalizados',customCheckPlaceholder:'Agregar ítem (ej: Devolver laptop)...',customCheckEmpty:'Sin ítems personalizados aún.',auditTitle:'Registro de Auditoría',auditEmpty:'Sin entradas de auditoría aún.',auditViewAll:'Ver Todo',emailTplLabel:'✏️ Editar Plantilla de Email',emailTplSubjectLbl:'Asunto',emailTplBodyLbl:'Cuerpo (HTML)',emailTplSaveBtn:'💾 Guardar Plantilla',emailTplResetBtn:'↩ Restaurar por Defecto',backupNotifyLbl:'📧 Notificar al terminar (opcional)',backupScheduleLbl:'📅 Programar backup (opcional)',fullRunTitle:'Full Run — Backup + Offboarding',fullRunDesc:'Ejecuta el backup primero, luego el offboarding. Usa las opciones seleccionadas en cada sección.',fullRunScheduleLbl:'📅 O programar para más tarde (opcional)',fullRunHint:'Seleccioná un usuario y confirmá el backup de eDiscovery para habilitar el Full Run.'}
+};
+let lang=localStorage.getItem('lang')||'en';
+let historyData=[];
+function setLang(l){
+  lang=l;localStorage.setItem('lang',l);
+  document.getElementById('btnLangEn').classList.toggle('active',l==='en');
+  document.getElementById('btnLangEs').classList.toggle('active',l==='es');
+  const eH=document.getElementById('btnLangEnH');if(eH)eH.classList.toggle('active',l==='en');
+  const sH=document.getElementById('btnLangEsH');if(sH)sH.classList.toggle('active',l==='es');
+  const t=T[l];
+  ['loginTitle','loginSubtitle','loginBtnText','disclaimerTitle','disclaimerText','fc1','fc1d','fc2','fc2d','fc3','fc3d','howToTitle','howToIntro','ht1t','ht1d','ht2t','ht2d','ht3t','ht3d','ht4t','ht4d','howToWarn','searchTitle','histTitle','statTotalLabel','statBackupsLabel','statOffboardingsLabel','statMonthLabel','auditTitle'].forEach(k=>{const el=document.getElementById(k);if(el)el.textContent=t[k];});
+  const tabOff=document.getElementById('tabBtnOff');if(tabOff)tabOff.textContent=t.tabOff;
+  const tabHist=document.getElementById('tabBtnHist');if(tabHist)tabHist.textContent=t.tabHist;
+  const si=document.getElementById('searchInput');if(si)si.placeholder=t.searchPlaceholder;
+  const sb=document.getElementById('searchBtn');if(sb)sb.textContent=t.searchBtn;
+  const hs=document.getElementById('histSearch');if(hs)hs.placeholder=t.histFilterPlaceholder;
+  const ha=document.getElementById('histOptAll');if(ha)ha.textContent=t.histAllTypes;
+  const hf=document.getElementById('histFilterBtn');if(hf)hf.textContent=t.histFilterBtnText;
+  const he=document.getElementById('histExportBtn');if(he)he.textContent=t.histExportBtn;
+  const sl=document.getElementById('scheduleLbl');if(sl)sl.firstChild.textContent=t.scheduleLbl+' ';
+  const cct=document.getElementById('customCheckTitle');if(cct)cct.textContent=t.customCheckTitle;
+  const cci=document.getElementById('customCheckInput');if(cci)cci.placeholder=t.customCheckPlaceholder;
+  const bt=document.getElementById('batchTitle');if(bt)bt.textContent=t.batchTitle;
+  const bo1=document.getElementById('batchOptBackup');if(bo1)bo1.textContent=t.batchOptBackup;
+  const bo2=document.getElementById('batchOptOffboard');if(bo2)bo2.textContent=t.batchOptOffboard;
+  const etl=document.getElementById('emailTplLabel');if(etl)etl.textContent=t.emailTplLabel;
+  const ets=document.getElementById('emailTplSubjectLbl');if(ets)ets.textContent=t.emailTplSubjectLbl;
+  const etb=document.getElementById('emailTplBodyLbl');if(etb)etb.textContent=t.emailTplBodyLbl;
+  const etsv=document.getElementById('emailTplSaveBtn');if(etsv)etsv.textContent=t.emailTplSaveBtn;
+  const etr=document.getElementById('emailTplResetBtn');if(etr)etr.textContent=t.emailTplResetBtn;
+  const bnl=document.getElementById('backupNotifyLbl');if(bnl)bnl.textContent=t.backupNotifyLbl;
+  const bsl=document.getElementById('backupScheduleLbl');if(bsl)bsl.textContent=t.backupScheduleLbl;
+  const frt=document.getElementById('fullRunTitle');if(frt)frt.textContent=t.fullRunTitle;
+  const frd=document.getElementById('fullRunDesc');if(frd)frd.textContent=t.fullRunDesc;
+  const frsl=document.getElementById('fullRunScheduleLbl');if(frsl)frsl.textContent=t.fullRunScheduleLbl;
+  const frh=document.getElementById('fullRunHint');if(frh)frh.textContent=t.fullRunHint;
+}
+document.addEventListener('DOMContentLoaded',()=>setLang(lang));
+
+// ⚙️ CONFIGURATION — Replace these values before deploying. See README.md
+const CLIENT_ID='YOUR_AZURE_APP_CLIENT_ID';
+const TENANT_ID='YOUR_AZURE_TENANT_ID';
+const STORAGE_ACCOUNT='YOUR_STORAGE_ACCOUNT_NAME';
+const SAS_TOKEN='YOUR_AZURE_BLOB_SAS_TOKEN';
+const CONTAINER='YOUR_BLOB_CONTAINER_NAME';
 const HISTORY_BLOB='_history/log.json';
 
 const msalConfig={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:window.location.origin},cache:{cacheLocation:'sessionStorage',storeAuthStateInCookie:false}};
@@ -401,15 +669,18 @@ async function signIn(){
     document.getElementById('userPill').classList.remove('hidden');
     document.getElementById('loginSection').classList.add('hidden');
     document.getElementById('appSection').classList.remove('hidden');
+    document.getElementById('headerLangToggle').style.display='flex';
+    checkScheduled();
     notifyEmails=[adminEmail];renderEmailChips();
     await getAppToken();
+    logAudit('login',{admin:adminEmail});
   }catch(e){toast('error','Login failed',e.message,8000);}
 }
 
 // Get app token via backend proxy (avoids CORS issues)
 async function getAppToken(){
   if(appToken&&Date.now()<appTokenExpiry)return appToken;
-  const r=await fetch('https://jbk-offboarding-api.azurewebsites.net/api/token');
+  const r=await fetch('YOUR_AZURE_FUNCTION_API_URL/api/token');
   if(!r.ok){const err=await r.text();throw new Error('App token error: '+err);}
   const data=await r.json();
   appToken=data.access_token;
@@ -501,7 +772,10 @@ function showSearchResults(users){
     users.map((u,i)=>`<div onclick="pickUser(${i})" style="padding:12px 16px;cursor:pointer;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:12px;transition:background .15s;" onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background='#fff'">
       <div style="width:36px;height:36px;border-radius:50%;background:${u.accountEnabled?'#0078d4':'#999'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">${u.displayName.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase()}</div>
       <div><div style="font-weight:600;font-size:14px;">${u.displayName}</div><div style="font-size:12px;color:#666;">${u.mail||u.userPrincipalName||'—'} ${u.jobTitle?'· '+u.jobTitle:''}</div></div>
-      <span style="margin-left:auto;font-size:11px;padding:3px 8px;border-radius:10px;background:${u.accountEnabled?'#e6f4ea':'#fce8e6'};color:${u.accountEnabled?'#1e7e34':'#c62828'};">${u.accountEnabled?'Active':'Blocked'}</span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+        <button onclick="addToBatch(${i},event)" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;">+ Batch</button>
+        <span style="font-size:11px;padding:3px 8px;border-radius:10px;background:${u.accountEnabled?'#e6f4ea':'#fce8e6'};color:${u.accountEnabled?'#1e7e34':'#c62828'};">${u.accountEnabled?'Active':'Blocked'}</span>
+      </div>
     </div>`).join('');
   document.getElementById('searchInput').parentElement.after(div);
   window._searchResults=users;
@@ -525,6 +799,7 @@ async function selectUser(u){
   currentUser=u;
   await refreshUserDetails();
   document.getElementById('userSection').classList.remove('hidden');
+  renderCustomChecks();
   document.getElementById('progressSection').classList.add('hidden');
   document.getElementById('summaryDiv').classList.add('hidden');
   document.getElementById('confirmOffboard').checked=false;
@@ -597,10 +872,22 @@ async function runChecklist(u){
       document.getElementById('sizeEstimate').innerHTML=`<div class="size-estimate">📊 Estimated backup size: OneDrive <strong>~${usedGB} GB</strong></div>`;
     }catch{}
   }catch(e){updateCheck('c3','fail','OneDrive not accessible',e.message.substring(0,80));}
-  // Check Mailbox
+  // Check Mailbox + estimate size
   try{
-    await api(`/users/${u.id}/mailFolders?$top=1`);
-    updateCheck('c4','ok','Mailbox accessible','Mailbox found and readable');
+    const mf=await api(`/users/${u.id}/mailFolders?$top=50`);
+    const totalMsgs=(mf.value||[]).reduce((s,f)=>s+(f.totalItemCount||0),0);
+    const estMB=Math.round(totalMsgs*75/1024);
+    updateCheck('c4','ok','Mailbox accessible',`Mailbox found — ~${totalMsgs.toLocaleString()} emails (~${estMB} MB estimated)`);
+    // Update size estimate element to include email info
+    const se=document.getElementById('sizeEstimate');
+    if(!se.classList.contains('hidden')){
+      const existing=se.querySelector('div');
+      const emailSizeLabel=estMB>=1024?`${(estMB/1024).toFixed(1)} GB`:`${estMB} MB`;
+      if(existing)existing.innerHTML=existing.innerHTML+` &nbsp;|&nbsp; 📧 Emails: <strong>~${totalMsgs.toLocaleString()} emails (~${emailSizeLabel})</strong>`;
+    }else{
+      se.classList.remove('hidden');
+      se.innerHTML=`<div class="size-estimate">📧 Emails: <strong>~${totalMsgs.toLocaleString()} emails (~${emailSizeLabel} estimated)</strong></div>`;
+    }
   }catch(e){updateCheck('c4','fail','Mailbox not accessible',e.message.substring(0,80));}
 }
 
@@ -618,28 +905,20 @@ function updateCheck(id,status,title,detail){
 }
 
 // ===== BLOB STORAGE =====
-async function blobAuth(method,encodedBlobPath,date,ct){
-  const cr=`/${STORAGE_ACCOUNT}/${CONTAINER}/${encodedBlobPath}`;
-  const canonHeaders=(method==='PUT'?`x-ms-blob-type:BlockBlob\n`:'') + `x-ms-date:${date}\nx-ms-version:2020-10-02`;
-  // SharedKey: VERB + 11 standard headers + CanonicalizedHeaders + CanonicalizedResource
-  // Content-Length left empty — browser controls it via fetch(), Azure uses the actual header value
-  const sts=[method,'','','','',method==='PUT'?ct:'','','','','','','',canonHeaders,cr].join('\n');
-  const kb=Uint8Array.from(atob(STORAGE_KEY),c=>c.charCodeAt(0));
-  const ck=await crypto.subtle.importKey('raw',kb,{name:'HMAC',hash:'SHA-256'},false,['sign']);
-  const sig=await crypto.subtle.sign('HMAC',ck,new TextEncoder().encode(sts));
-  return `SharedKey ${STORAGE_ACCOUNT}:${btoa(String.fromCharCode(...new Uint8Array(sig)))}`;
-}
-
-async function uploadBlob(name,content,ct='text/plain',retries=3){
+async function uploadBlob(name,content,ct='text/plain',retries=4){
+  const encoded=name.split('/').map(encodeURIComponent).join('/');
+  const url=`https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/${encoded}?${SAS_TOKEN}`;
   for(let attempt=0;attempt<retries;attempt++){
-    const date=new Date().toUTCString();
-    const encoded=name.split('/').map(encodeURIComponent).join('/');
-    const url=`https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/${encoded}`;
-    const auth=await blobAuth('PUT',encoded,date,ct);
-    const r=await fetch(url,{method:'PUT',headers:{'x-ms-date':date,'x-ms-version':'2020-10-02','x-ms-blob-type':'BlockBlob','Content-Type':ct,Authorization:auth},body:content});
-    if(r.ok)return;
-    if(attempt<retries-1&&(r.status===403||r.status===500)){await new Promise(res=>setTimeout(res,1000*(attempt+1)));continue;}
-    throw new Error('Blob: '+await r.text());
+    try{
+      const r=await fetch(url,{method:'PUT',headers:{'x-ms-blob-type':'BlockBlob','Content-Type':ct},body:content});
+      if(r.ok)return;
+      const errText=await r.text();
+      if(attempt<retries-1){await new Promise(res=>setTimeout(res,800*(attempt+1)));continue;}
+      throw new Error('Blob: '+errText);
+    }catch(e){
+      if(attempt<retries-1){await new Promise(res=>setTimeout(res,800*(attempt+1)));continue;}
+      throw e;
+    }
   }
 }
 
@@ -648,22 +927,10 @@ async function listExistingBlobs(prefix){
   const existing=new Set();
   let marker='';
   while(true){
-    const date=new Date().toUTCString();
-    let qp=`comp=list&restype=container&prefix=${encodeURIComponent(prefix)}&maxresults=5000`;
+    let qp=`comp=list&restype=container&prefix=${encodeURIComponent(prefix)}&maxresults=5000&${SAS_TOKEN}`;
     if(marker)qp+=`&marker=${encodeURIComponent(marker)}`;
     const url=`https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}?${qp}`;
-    // CanonicalizedResource: /{account}/{container}\ncomp:list\n... (query params in alpha order, decoded)
-    let crParams=`\ncomp:list\nmaxresults:5000`;
-    if(marker)crParams+=`\nmarker:${marker}`;
-    crParams+=`\nprefix:${prefix}\nrestype:container`;
-    const cr=`/${STORAGE_ACCOUNT}/${CONTAINER}${crParams}`;
-    const canonHeaders=`x-ms-date:${date}\nx-ms-version:2020-10-02`;
-    const sts=['GET','','','','','','','','','','','',canonHeaders,cr].join('\n');
-    const kb=Uint8Array.from(atob(STORAGE_KEY),c=>c.charCodeAt(0));
-    const ck=await crypto.subtle.importKey('raw',kb,{name:'HMAC',hash:'SHA-256'},false,['sign']);
-    const sig=await crypto.subtle.sign('HMAC',ck,new TextEncoder().encode(sts));
-    const auth=`SharedKey ${STORAGE_ACCOUNT}:${btoa(String.fromCharCode(...new Uint8Array(sig)))}`;
-    const r=await fetch(url,{headers:{'x-ms-date':date,'x-ms-version':'2020-10-02',Authorization:auth}});
+    const r=await fetch(url);
     if(!r.ok){console.error('listBlobs error:',await r.text());break;}
     const xml=await r.text();
     const names=xml.match(/<Name>([^<]+)<\/Name>/g)||[];
@@ -678,17 +945,9 @@ async function listExistingBlobs(prefix){
 function fmtTime(s){if(s<60)return`${Math.round(s)}s`;if(s<3600)return`${Math.floor(s/60)}m ${Math.round(s%60)}s`;return`${Math.floor(s/3600)}h ${Math.floor((s%3600)/60)}m`;}
 
 async function readBlob(name){
-  const date=new Date().toUTCString();
   const encoded=name.split('/').map(encodeURIComponent).join('/');
-  const url=`https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/${encoded}`;
-  const cr=`/${STORAGE_ACCOUNT}/${CONTAINER}/${encoded}`;
-  const canonHeaders=`x-ms-date:${date}\nx-ms-version:2020-10-02`;
-  const sts=['GET','','','','','','','','','','','',canonHeaders,cr].join('\n');
-  const kb=Uint8Array.from(atob(STORAGE_KEY),c=>c.charCodeAt(0));
-  const ck=await crypto.subtle.importKey('raw',kb,{name:'HMAC',hash:'SHA-256'},false,['sign']);
-  const sig=await crypto.subtle.sign('HMAC',ck,new TextEncoder().encode(sts));
-  const auth=`SharedKey ${STORAGE_ACCOUNT}:${btoa(String.fromCharCode(...new Uint8Array(sig)))}`;
-  const r=await fetch(url,{headers:{'x-ms-date':date,'x-ms-version':'2020-10-02',Authorization:auth}});
+  const url=`https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/${encoded}?${SAS_TOKEN}`;
+  const r=await fetch(url);
   if(!r.ok)return null;
   return r.text();
 }
@@ -720,7 +979,7 @@ function setStep(i,state,txt){
   const st=document.getElementById(`st${i}`);st.className='step-status '+state;st.textContent=txt;
   document.getElementById(`b${i}`).classList.add('show');
 }
-function setBar(i,pct){const p=document.getElementById(`p${i}`);if(p)p.style.width=pct+'%';}
+function setBar(i,pct,active=true){const p=document.getElementById(`p${i}`);if(!p)return;p.style.width=pct+'%';if(pct>=100||!active){p.classList.remove('active');}else{p.classList.add('active');}}
 function log(i,msg,type=''){
   const l=document.getElementById(`l${i}`);if(!l)return;
   const p=document.createElement('p');p.className=type;p.textContent=msg;l.appendChild(p);l.scrollTop=l.scrollHeight;
@@ -730,6 +989,7 @@ function log(i,msg,type=''){
 let backupCancelled=false;
 let backupPaused=false;
 let backupRunning=false;
+let backupErrors=[];
 
 function resetBackupState(){
   backupCancelled=true;
@@ -749,6 +1009,13 @@ async function waitWhilePaused(){
   while(backupPaused&&!backupCancelled){await new Promise(r=>setTimeout(r,300));}
 }
 
+function toggleHowTo(){
+  const body=document.getElementById('howToBody');
+  const chevron=document.getElementById('howToChevron');
+  const open=body.style.display==='none';
+  body.style.display=open?'block':'none';
+  chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+}
 function togglePause(){
   if(backupPaused){
     backupPaused=false;
@@ -769,12 +1036,15 @@ function cancelBackup(){
 }
 
 async function runBackup(){
+  const schedDate=document.getElementById('backupScheduleDate')?.value;
+  if(schedDate){await scheduleBackup(schedDate);return;}
   const doOneDrive=document.getElementById('chkOneDrive').checked;
   const doEmails=document.getElementById('chkEmails').checked;
   if(!doOneDrive&&!doEmails){toast('warn','No selection','Select at least one backup option.');return;}
   backupCancelled=false;
   backupPaused=false;
   backupRunning=true;
+  backupErrors=[];
   document.getElementById('backupBtn').disabled=true;
   document.getElementById('backupBtn').innerHTML='<span class="spinner"></span> Running...';
   // Add pause/cancel buttons
@@ -791,8 +1061,9 @@ async function runBackup(){
   if(doEmails)steps.push({icon:'📧',title:'Backup Emails → Azure Blob',hasProgress:true});
   initSteps(steps);
   let idx=0,ok=true;
-  if(doOneDrive&&!backupCancelled){const r=await backupOneDrive(idx);if(!r)ok=false;idx++;}
-  if(doEmails&&!backupCancelled){const r=await backupEmails(idx);if(!r)ok=false;}
+  let odStats=null,emStats=null;
+  if(doOneDrive&&!backupCancelled){odStats=await backupOneDrive(idx);if(!odStats.ok)ok=false;idx++;}
+  if(doEmails&&!backupCancelled){emStats=await backupEmails(idx);if(!emStats.ok)ok=false;}
   controlDiv.innerHTML='';
   backupRunning=false;
   const backupTypes=[];
@@ -804,8 +1075,10 @@ async function runBackup(){
     div.innerHTML=`<div class="summary-err" style="border-color:#e65100;background:#fff3e0;"><h3 style="color:#e65100;">⏹ Backup Cancelled</h3><p>Backup was stopped by user. Already uploaded files are safe. Resume anytime — duplicates will be skipped.</p></div>`;
   }else{
     await saveHistory(ok,'backup',{backupTypes});
-    showSummary(ok,'Backup');
+    showBackupSummary(odStats,emStats);
   }
+  logAudit('backup',{user:currentUser?.displayName,email:currentUser?.mail||currentUser?.userPrincipalName,types:backupTypes,status:backupCancelled?'Cancelled':(ok?'Complete':'Partial')});
+  if(!backupCancelled&&!fullRunMode)await sendBackupNotification(ok,{od:odStats,em:emStats});
   document.getElementById('backupBtn').disabled=false;
   document.getElementById('backupBtn').textContent='▶ Start Backup';
 }
@@ -813,7 +1086,8 @@ async function runBackup(){
 async function backupOneDrive(idx){
   setStep(idx,'active','⏳ Running...');
   log(idx,'Connecting to OneDrive...','info');
-  const PARALLEL=15;
+  const PARALLEL=20;
+  const startTime=Date.now();
   try{
     const name=currentUser.displayName;
     let allFiles=[];
@@ -822,17 +1096,22 @@ async function backupOneDrive(idx){
     log(idx,`Total: ${allFiles.length} files (${(totalSize/1024/1024).toFixed(1)} MB). Checking existing backups...`,'info');
     const existingBlobs=await listExistingBlobs(`${name}/OneDrive/`);
     log(idx,`Found ${existingBlobs.size} existing files in storage. Uploading ${PARALLEL} in parallel...`,'info');
-    let done=0,errors=0,skipped=0,bytesTransferred=0,startTime=Date.now();
+    let done=0,errors=0,skipped=0,bytesTransferred=0;
+    // Sliding window for accurate speed
+    const speedSamples=[];
     function updateProgress(){
       const processed=done+errors+skipped;
       const pct=allFiles.length>0?Math.round((processed/allFiles.length)*100):0;
       setBar(idx,pct);
-      const elapsed=(Date.now()-startTime)/1000;
-      const speedMBs=elapsed>0?(bytesTransferred/1024/1024)/elapsed:0;
-      const remaining=processed>0?((allFiles.length-processed)/(processed/elapsed)):0;
-      setStep(idx,'active',`⏳ ${processed}/${allFiles.length} (${pct}%) — ${(bytesTransferred/1024/1024).toFixed(1)} MB — ${speedMBs.toFixed(1)} MB/s — ~${fmtTime(remaining)} left`);
+      const now=Date.now();
+      speedSamples.push({t:now,b:bytesTransferred});
+      const wnd=speedSamples.filter(s=>now-s.t<10000);
+      const speedMBs=wnd.length>1?((bytesTransferred-wnd[0].b)/1024/1024)/((now-wnd[0].t)/1000):0;
+      const elapsed=fmtTime((now-startTime)/1000);
+      const remaining=speedMBs>0.001?((totalSize-bytesTransferred)/1024/1024)/speedMBs:null;
+      const etaPart=remaining!==null?` — ~${fmtTime(remaining)} left`:' — calculating...';
+      setStep(idx,'active',`⏳ ${processed}/${allFiles.length} (${pct}%) — ${(bytesTransferred/1024/1024).toFixed(1)} MB — ${speedMBs.toFixed(2)} MB/s — elapsed ${elapsed}${etaPart}`);
     }
-    // Process in parallel batches
     for(let i=0;i<allFiles.length;i+=PARALLEL){
       if(backupCancelled){log(idx,'⏹ Cancelled by user','warn');break;}
       await waitWhilePaused();
@@ -841,30 +1120,45 @@ async function backupOneDrive(idx){
         if(backupCancelled)return;
         const blobPath=`${name}/OneDrive/${f.path}`;
         try{
-          if(existingBlobs.has(blobPath)){skipped++;
-          }else{
+          if(existingBlobs.has(blobPath)){skipped++;}
+          else{
             const item=await api(`/users/${currentUser.id}/drive/items/${f.id}`);
             const dlUrl=item['@microsoft.graph.downloadUrl'];
             if(!dlUrl)throw new Error('No download URL');
-            const r=await fetch(dlUrl);
-            if(!r.ok)throw new Error('Download: '+r.status);
-            const buf=await r.arrayBuffer();
+            let buf;
+            const dlRetries=4;
+            for(let dlAttempt=0;dlAttempt<dlRetries;dlAttempt++){
+              try{
+                const r=await fetch(dlUrl);
+                if(!r.ok)throw new Error('Download: '+r.status);
+                buf=await r.arrayBuffer();
+                break;
+              }catch(dlErr){
+                if(dlAttempt<dlRetries-1){await new Promise(res=>setTimeout(res,900*(dlAttempt+1)));continue;}
+                throw dlErr;
+              }
+            }
             await uploadBlob(blobPath,buf,f.mimeType||'application/octet-stream');
             bytesTransferred+=buf.byteLength;
             log(idx,`✓ ${f.path} (${(f.size/1024/1024).toFixed(1)} MB)`,'ok');
             done++;
           }
-        }catch(e){log(idx,`✗ ${f.path}: ${e.message}`,'err');errors++;}
+        }catch(e){
+          const msg=`OneDrive ✗ ${f.path}: ${e.message}`;
+          log(idx,`✗ ${f.path}: ${e.message}`,'err');
+          backupErrors.push(msg);
+          errors++;
+        }
       }));
       updateProgress();
     }
-    setBar(idx,100);
+    setBar(idx,100,false);
     const totalTime=fmtTime((Date.now()-startTime)/1000);
     const totalMB=(bytesTransferred/1024/1024).toFixed(1);
-    if(errors>0){setStep(idx,'done',`⚠️ ${done} new (${totalMB} MB), ${skipped} skipped, ${errors} errors (${totalTime})`);return false;}
-    setStep(idx,'done',`✅ ${done} new (${totalMB} MB), ${skipped} skipped (${totalTime})`);
-    return true;
-  }catch(e){setStep(idx,'error','❌ Error');log(idx,e.message,'err');return false;}
+    if(errors>0){setStep(idx,'done',`⚠️ ${done} new (${totalMB} MB), ${skipped} skipped, ${errors} errors (${totalTime})`);}
+    else{setStep(idx,'done',`✅ ${done} new (${totalMB} MB), ${skipped} skipped (${totalTime})`);}
+    return{ok:errors===0,done,skipped,errors,totalMB,totalTime};
+  }catch(e){setStep(idx,'error','❌ Error');log(idx,e.message,'err');backupErrors.push('OneDrive fatal: '+e.message);return{ok:false,done:0,skipped:0,errors:1,totalMB:'0',totalTime:'—'};}
 }
 
 async function collectOneDriveFiles(userId,folderId,results,idx,path=''){
@@ -886,7 +1180,8 @@ async function collectOneDriveFiles(userId,folderId,results,idx,path=''){
 async function backupEmails(idx){
   setStep(idx,'active','⏳ Running...');
   log(idx,'Connecting to mailbox...','info');
-  const PARALLEL=30;
+  const PARALLEL=20;
+  const startTime=Date.now();
   try{
     const name=currentUser.displayName;
     let fNextUrl=`/users/${currentUser.id}/mailFolders?$top=50`;
@@ -900,16 +1195,20 @@ async function backupEmails(idx){
     log(idx,`${folders.length} mail folders found (~${totalEmails} total emails). Checking existing backups...`,'info');
     const existingBlobs=await listExistingBlobs(`${name}/Emails/`);
     log(idx,`Found ${existingBlobs.size} existing emails in storage. Uploading ${PARALLEL} in parallel...`,'info');
-    let total=0,skipped=0,fi=0,folderErrors=0,startTime=Date.now();
-    let processed=0;
+    let total=0,skipped=0,fi=0,emailErrors=0,processed=0;
+    const speedSamples=[];
     function updateProgress(){
       if(totalEmails>0){
         const pct=Math.round((processed/totalEmails)*100);
         setBar(idx,pct);
-        const elapsed=(Date.now()-startTime)/1000;
-        const emailsPerSec=elapsed>0?processed/elapsed:0;
-        const remaining=emailsPerSec>0?(totalEmails-processed)/emailsPerSec:0;
-        setStep(idx,'active',`⏳ ${processed}/${totalEmails} (${pct}%) — ${emailsPerSec.toFixed(1)} emails/s — ${fmtTime(elapsed)} elapsed — ~${fmtTime(remaining)} left`);
+        const now=Date.now();
+        speedSamples.push({t:now,p:processed});
+        const wnd=speedSamples.filter(s=>now-s.t<10000);
+        const emailsPerSec=wnd.length>1?((processed-wnd[0].p)/((now-wnd[0].t)/1000)):0;
+        const elapsed=fmtTime((now-startTime)/1000);
+        const remaining=emailsPerSec>0.01?(totalEmails-processed)/emailsPerSec:null;
+        const etaPart=remaining!==null?` — ~${fmtTime(remaining)} left`:' — calculating...';
+        setStep(idx,'active',`⏳ ${processed}/${totalEmails} (${pct}%) — ${emailsPerSec.toFixed(1)} emails/s — elapsed ${elapsed}${etaPart}`);
       }
     }
     for(const f of folders){
@@ -919,7 +1218,6 @@ async function backupEmails(idx){
         while(mNextUrl){
           const md=await api(mNextUrl);
           const msgs=md.value||[];
-          // Process page in parallel batches
           for(let i=0;i<msgs.length;i+=PARALLEL){
             if(backupCancelled){log(idx,'⏹ Cancelled by user','warn');break;}
             await waitWhilePaused();
@@ -930,13 +1228,18 @@ async function backupEmails(idx){
               const dt=(m.receivedDateTime||'').substring(0,10);
               const blobPath=`${name}/Emails/${f.displayName}/${dt}_${subj}.eml`;
               try{
-                if(existingBlobs.has(blobPath)){skipped++;
-                }else{
+                if(existingBlobs.has(blobPath)){skipped++;}
+                else{
                   const content=`Subject: ${m.subject||''}\nFrom: ${m.from?.emailAddress?.address||''}\nDate: ${m.receivedDateTime||''}\n\n${m.body?.content||''}`;
                   await uploadBlob(blobPath,content,'message/rfc822');
                   total++;
                 }
-              }catch(e){log(idx,`✗ ${subj}: ${e.message}`,'err');}
+              }catch(e){
+                const msg=`Email ✗ ${subj}: ${e.message}`;
+                log(idx,`✗ ${subj}: ${e.message}`,'err');
+                backupErrors.push(msg);
+                emailErrors++;
+              }
               processed++;
             }));
             updateProgress();
@@ -944,19 +1247,21 @@ async function backupEmails(idx){
           if(backupCancelled)break;
           mNextUrl=md['@odata.nextLink']||null;
         }
-      }catch(e){log(idx,`✗ ${f.displayName}: ${e.message}`,'err');folderErrors++;}
+      }catch(e){log(idx,`✗ ${f.displayName}: ${e.message}`,'err');backupErrors.push(`Folder ✗ ${f.displayName}: ${e.message}`);emailErrors++;}
       fi++;
     }
-    setBar(idx,100);
+    setBar(idx,100,false);
     const totalTime=fmtTime((Date.now()-startTime)/1000);
-    if(folderErrors>0){setStep(idx,'done',`⚠️ ${total} new, ${skipped} skipped, ${folderErrors} folder errors (${totalTime})`);return false;}
-    setStep(idx,'done',`✅ ${total} new, ${skipped} skipped from ${fi} folders (${totalTime})`);
-    return true;
-  }catch(e){setStep(idx,'error','❌ Error');log(idx,e.message,'err');return false;}
+    if(emailErrors>0){setStep(idx,'done',`⚠️ ${total} new, ${skipped} skipped, ${emailErrors} errors (${totalTime})`);}
+    else{setStep(idx,'done',`✅ ${total} new, ${skipped} skipped from ${fi} folders (${totalTime})`);}
+    return{ok:emailErrors===0,total,skipped,errors:emailErrors,totalTime};
+  }catch(e){setStep(idx,'error','❌ Error');log(idx,e.message,'err');backupErrors.push('Emails fatal: '+e.message);return{ok:false,total:0,skipped:0,errors:1,totalTime:'—'};}
 }
 
 // ===== OFFBOARDING =====
 async function runOffboarding(){
+  const schedDate=document.getElementById('scheduleDate').value;
+  if(schedDate){await scheduleOffboarding(schedDate);return;}
   const doLic=document.getElementById('chkLicenses').checked;
   const doGrp=document.getElementById('chkGroups').checked;
   const doBlk=document.getElementById('chkBlock').checked;
@@ -973,7 +1278,8 @@ async function runOffboarding(){
   if(doGrp){const r=await removeGroups(idx);if(!r)allOk=false;idx++;}
   if(doBlk){const r=await blockSignIn(idx);if(!r)allOk=false;}
   await saveHistory(allOk);
-  await sendNotification(allOk);
+  logAudit('offboarding',{user:currentUser?.displayName,email:currentUser?.mail||currentUser?.userPrincipalName,actions:steps.map(s=>s.title),status:allOk?'Complete':'Partial'});
+  if(!fullRunMode)await sendNotification(allOk);
   showSummary(allOk,'Offboarding');
   document.getElementById('offboardBtn').disabled=false;
   document.getElementById('offboardBtn').textContent='🚀 Execute Offboarding';
@@ -1036,6 +1342,24 @@ async function blockSignIn(idx){
   }catch(e){setStep(idx,'error','❌ Error');log(idx,e.message,'err');return false;}
 }
 
+function showBackupSummary(odStats,emStats){
+  const div=document.getElementById('summaryDiv');
+  div.classList.remove('hidden');
+  const hasErrors=backupErrors.length>0;
+  const allOk=(!odStats||odStats.ok)&&(!emStats||emStats.ok);
+  let html=`<div class="${allOk?'summary-ok':'summary-err'}">`;
+  html+=`<h3>${allOk?'✅':'⚠️'} Backup ${allOk?'Complete':'Completed with Errors'}</h3>`;
+  if(odStats){html+=`<p style="margin-top:8px;">📁 <strong>OneDrive:</strong> ${odStats.done} files saved (${odStats.totalMB} MB), ${odStats.skipped} skipped${odStats.errors>0?`, <span style="color:#d93025">${odStats.errors} errors</span>`:''}  — ${odStats.totalTime}</p>`;}
+  if(emStats){html+=`<p>📧 <strong>Emails:</strong> ${emStats.total} emails saved, ${emStats.skipped} skipped${emStats.errors>0?`, <span style="color:#d93025">${emStats.errors} errors</span>`:''}  — ${emStats.totalTime}</p>`;}
+  html+=`</div>`;
+  if(hasErrors){
+    html+=`<div class="error-log-box"><button class="btn-copy" onclick="copyBackupErrors()">📋 Copy Error Log</button><pre id="errorLogText">${backupErrors.join('\n')}</pre></div>`;
+  }
+  div.innerHTML=html;
+}
+function copyBackupErrors(){
+  navigator.clipboard.writeText(backupErrors.join('\n')).then(()=>{toast('ok','Copied','Error log copied to clipboard');}).catch(()=>{toast('error','Failed','Could not copy to clipboard');});
+}
 function showSummary(ok,type){
   const div=document.getElementById('summaryDiv');
   div.classList.remove('hidden');
@@ -1074,66 +1398,497 @@ async function saveHistory(ok,type='offboarding',details={}){
 
 async function loadHistory(){
   const c=document.getElementById('historyContent');
-  c.innerHTML='<div class="empty-state"><div class="es-icon">⏳</div><p>Loading...</p></div>';
+  const t=T[lang];
+  c.innerHTML=`<div class="empty-state"><div class="es-icon">⏳</div><p>${t.histLoading}</p></div>`;
   try{
     const data=await readBlob(HISTORY_BLOB);
-    if(!data){c.innerHTML='<div class="empty-state"><div class="es-icon">📭</div><p>No history yet.</p></div>';return;}
+    if(!data){c.innerHTML=`<div class="empty-state"><div class="es-icon">📭</div><p>${t.histEmpty}</p></div>`;return;}
     const history=JSON.parse(data);
-    if(!history.length){c.innerHTML='<div class="empty-state"><div class="es-icon">📭</div><p>No history yet.</p></div>';return;}
+    if(!history.length){c.innerHTML=`<div class="empty-state"><div class="es-icon">📭</div><p>${t.histEmpty}</p></div>`;return;}
+    // Dashboard stats
+    const now=new Date();const monthStart=new Date(now.getFullYear(),now.getMonth(),1).toISOString();
+    document.getElementById('statTotal').textContent=history.length;
+    document.getElementById('statBackups').textContent=history.filter(h=>h.type==='backup').length;
+    document.getElementById('statOffboardings').textContent=history.filter(h=>h.type==='offboarding').length;
+    document.getElementById('statMonth').textContent=history.filter(h=>h.date>=monthStart).length;
+    historyData=history;
+    let filtered=history;
+    const sq=(document.getElementById('histSearch').value||'').toLowerCase();
+    const tf=document.getElementById('histTypeFilter').value;
+    const df=document.getElementById('histDateFrom').value;
+    const dt=document.getElementById('histDateTo').value;
+    if(sq)filtered=filtered.filter(h=>(h.user||'').toLowerCase().includes(sq)||(h.email||'').toLowerCase().includes(sq));
+    if(tf)filtered=filtered.filter(h=>h.type===tf);
+    if(df)filtered=filtered.filter(h=>h.date>=df);
+    if(dt)filtered=filtered.filter(h=>h.date<=dt+'T23:59:59');
+    if(!filtered.length){c.innerHTML=`<div class="empty-state"><div class="es-icon">🔍</div><p>${lang==='es'?'Sin resultados para ese filtro.':'No results for that filter.'}</p></div>`;return;}
     function actionPills(h){
       if(h.type==='backup'){
-        const items=(h.backupTypes||[]).map(t=>`<span style="background:#e8f3fd;color:#0078d4;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:1px 2px;display:inline-block;">📁 ${t}</span>`);
-        if(h.cancelled)items.push('<span style="background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:1px 2px;display:inline-block;">⏹ Cancelled</span>');
+        const items=(h.backupTypes||[]).map(bt=>`<span style="background:#e8f3fd;color:#0078d4;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:1px 2px;display:inline-block;">📁 ${bt}</span>`);
+        if(h.cancelled)items.push(`<span style="background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:1px 2px;display:inline-block;">⏹ ${t.cancelled}</span>`);
         return items.join('')||'—';
       }
       if(h.actions&&h.actions.length){
+        const actionLabels=lang==='es'?{'Remove Licenses':'Quitar Licencias','Remove Groups':'Quitar Grupos','Block Sign-in':'Bloquear Acceso'}:{};
         return h.actions.map(a=>{
           const colors={'Remove Licenses':['#fce4ec','#c62828','🪪'],'Remove Groups':['#e8eaf6','#283593','👥'],'Block Sign-in':['#fff3e0','#e65100','🔒']};
           const [bg,fg,icon]=colors[a]||['#f5f5f5','#333','•'];
-          return `<span style="background:${bg};color:${fg};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:1px 2px;display:inline-block;">${icon} ${a}</span>`;
+          const label=actionLabels[a]||a;
+          return `<span style="background:${bg};color:${fg};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin:1px 2px;display:inline-block;">${icon} ${label}</span>`;
         }).join('');
       }
       return '—';
     }
     function typeBadge(h){
-      if(h.type==='backup')return '<span style="background:#e8f3fd;color:#0078d4;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">📦 Backup</span>';
-      return '<span style="background:#fce4ec;color:#c62828;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">🚀 Offboarding</span>';
+      if(h.type==='backup')return `<span style="background:#e8f3fd;color:#0078d4;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">📦 ${t.badgeBackup}</span>`;
+      return `<span style="background:#fce4ec;color:#c62828;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">🚀 ${t.badgeOffboarding}</span>`;
     }
+    function statusLabel(s){return s==='Complete'?t.statusComplete:t.statusPartial;}
+    const locale=lang==='es'?'es-AR':'en-US';
     c.innerHTML=`<table class="history-table">
-      <thead><tr><th>Type</th><th>User</th><th>Email</th><th>Date</th><th>Actions</th><th>Reason</th><th>Admin</th><th>Status</th><th>Notes</th></tr></thead>
-      <tbody>${history.map(h=>`<tr>
+      <thead><tr><th>${t.thType}</th><th>${t.thUser}</th><th>${t.thEmail}</th><th>${t.thDate}</th><th>${t.thActions}</th><th>${t.thReason}</th><th>${t.thAdmin}</th><th>${t.thStatus}</th><th>${t.thNotes}</th></tr></thead>
+      <tbody>${filtered.map(h=>`<tr>
         <td>${typeBadge(h)}</td>
         <td><strong>${h.user}</strong></td>
         <td>${h.email}</td>
-        <td>${new Date(h.date).toLocaleDateString()} ${new Date(h.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
+        <td>${new Date(h.date).toLocaleDateString(locale)} ${new Date(h.date).toLocaleTimeString(locale,{hour:'2-digit',minute:'2-digit'})}</td>
         <td>${actionPills(h)}</td>
         <td>${h.reason||'—'}</td>
         <td>${h.admin}</td>
-        <td><span class="status-pill ${h.status==='Complete'?'sp-ok':'sp-partial'}">${h.status}</span></td>
+        <td><span class="status-pill ${h.status==='Complete'?'sp-ok':'sp-partial'}">${statusLabel(h.status)}</span></td>
         <td>${h.notes||'—'}</td>
       </tr>`).join('')}</tbody>
     </table>`;
-  }catch(e){c.innerHTML='<div class="empty-state"><div class="es-icon">❌</div><p>Error loading history.</p></div>';}
+  }catch(e){c.innerHTML=`<div class="empty-state"><div class="es-icon">❌</div><p>${t.histError}</p></div>`;}
+}
+
+// ===== CUSTOM CHECKLIST =====
+function loadCustomChecks(){return JSON.parse(localStorage.getItem('customChecks')||'[]');}
+function saveCustomChecks(arr){localStorage.setItem('customChecks',JSON.stringify(arr));}
+function renderCustomChecks(){
+  const items=loadCustomChecks();
+  const el=document.getElementById('customCheckList');
+  if(!el)return;
+  const emptyLabel=T[lang].customCheckEmpty;
+  el.innerHTML=items.length?items.map((item,i)=>`
+    <div class="custom-check-item">
+      <input type="checkbox" id="cc_${i}">
+      <label for="cc_${i}">${item}</label>
+      <button onclick="removeCustomCheck(${i})" style="background:none;border:none;cursor:pointer;color:#d93025;font-size:16px;padding:0 4px;line-height:1;">✕</button>
+    </div>`).join(''):`<div style="font-size:12px;color:#94a3b8;padding:4px 0;">${emptyLabel}</div>`;
+}
+function addCustomCheck(){
+  const input=document.getElementById('customCheckInput');
+  const val=(input.value||'').trim();
+  if(!val)return;
+  const items=loadCustomChecks();items.push(val);saveCustomChecks(items);
+  input.value='';renderCustomChecks();
+}
+function removeCustomCheck(i){
+  const items=loadCustomChecks();items.splice(i,1);saveCustomChecks(items);renderCustomChecks();
+}
+
+// ===== SCHEDULED OFFBOARDING =====
+async function scheduleOffboarding(schedDate){
+  const entry={
+    id:Date.now().toString(),
+    scheduledFor:schedDate,
+    user:{id:currentUser.id,displayName:currentUser.displayName,mail:currentUser.mail||currentUser.userPrincipalName},
+    actions:{doLic:document.getElementById('chkLicenses').checked,doGrp:document.getElementById('chkGroups').checked,doBlk:document.getElementById('chkBlock').checked},
+    reason:document.getElementById('departureReason').value,
+    notes:document.getElementById('offboardingNotes').value,
+    scheduledBy:adminEmail,
+    createdAt:new Date().toISOString()
+  };
+  const existing=JSON.parse(await readBlob('_scheduled/pending.json')||'[]');
+  existing.push(entry);
+  await uploadBlob('_scheduled/pending.json',JSON.stringify(existing),'application/json');
+  document.getElementById('scheduleDate').value='';
+  toast('success','Scheduled',`Offboarding for ${currentUser.displayName} scheduled for ${new Date(schedDate).toLocaleString()}`);
+}
+async function checkScheduled(){
+  try{
+    const data=await readBlob('_scheduled/pending.json');
+    if(!data)return;
+    const scheduled=JSON.parse(data);
+    const now=new Date().toISOString().slice(0,16);
+    const due=scheduled.filter(s=>s.scheduledFor<=now);
+    if(!due.length)return;
+    const old=document.getElementById('scheduledBanner');if(old)old.remove();
+    const banner=document.createElement('div');
+    banner.id='scheduledBanner';
+    banner.style.cssText='background:#fff3e0;border:2px solid #e65100;border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:13px;line-height:1.6;';
+    const typeLabel={offboarding:'Offboarding',backup:'Backup',fullrun:'Full Run'};
+    banner.innerHTML=`<strong>⏰ ${due.length} scheduled task${due.length>1?'s':''} due!</strong><br>${due.map(s=>`• <strong>${s.user.displayName}</strong> — ${typeLabel[s.type]||s.type} — ${new Date(s.scheduledFor).toLocaleString()}`).join('<br>')}<br><div style="display:flex;gap:8px;margin-top:10px;"><button class="btn btn-primary" style="font-size:12px;padding:6px 14px;" onclick="executeScheduled()">▶ Execute Now</button><button class="btn" style="font-size:12px;padding:6px 14px;background:#f1f5f9;color:#334155;" onclick="dismissScheduled()">✕ Dismiss</button></div>`;
+    const tab=document.getElementById('tabOffboarding');
+    tab.insertBefore(banner,tab.firstChild);
+    window._scheduledDue=due;
+    window._scheduledAll=scheduled;
+  }catch(e){}
+}
+async function executeScheduled(){
+  if(!window._scheduledDue||!window._scheduledDue.length)return;
+  for(const s of window._scheduledDue){
+    try{
+      const full=await api(`/users/${s.user.id}?$select=id,displayName,mail,userPrincipalName,accountEnabled,jobTitle,department,onPremisesLastSyncDateTime`);
+      currentUser=full;
+      if(s.type==='backup'||s.type==='fullrun'){
+        if(s.backupOptions){
+          document.getElementById('chkOneDrive').checked=!!s.backupOptions.doOneDrive;
+          document.getElementById('chkEmails').checked=!!s.backupOptions.doEmails;
+        }
+        if(s.notifyEmails){backupNotifyEmails=[...s.notifyEmails];renderBackupEmailChips();}
+        document.getElementById('backupScheduleDate').value='';
+      }
+      if(s.type==='offboarding'||s.type==='fullrun'){
+        document.getElementById('chkLicenses').checked=s.actions?.doLic||false;
+        document.getElementById('chkGroups').checked=s.actions?.doGrp||false;
+        document.getElementById('chkBlock').checked=s.actions?.doBlk||false;
+        document.getElementById('departureReason').value=s.reason||'';
+        document.getElementById('offboardingNotes').value=s.notes||'';
+        document.getElementById('confirmOffboard').checked=true;
+        document.getElementById('offboardBtn').disabled=false;
+        const frb=document.getElementById('fullRunBtn');if(frb)frb.disabled=false;
+      }
+      if(s.type==='backup'){await runBackup();}
+      else if(s.type==='offboarding'){await runOffboarding();}
+      else if(s.type==='fullrun'){await runBackup();await runOffboarding();}
+    }catch(e){toast('error','Scheduled error',`${s.user.displayName}: ${e.message}`);}
+  }
+  const remaining=(window._scheduledAll||[]).filter(s=>!window._scheduledDue.some(d=>d.id===s.id));
+  await uploadBlob('_scheduled/pending.json',JSON.stringify(remaining),'application/json');
+  dismissScheduled();
+}
+function dismissScheduled(){
+  const b=document.getElementById('scheduledBanner');if(b)b.remove();
+}
+
+// ===== BATCH OFFBOARDING =====
+let batchQueue=[];
+function addToBatch(idx,event){
+  event.stopPropagation();
+  const u=window._searchResults[idx];
+  if(batchQueue.some(b=>b.id===u.id)){toast('warn','Batch',`${u.displayName} is already in the batch`);return;}
+  batchQueue.push(u);
+  renderBatchPanel();
+  document.getElementById('batchPanel').classList.remove('hidden');
+  toast('success','Batch',`${u.displayName} added to batch`);
+}
+function removeFromBatch(i){
+  batchQueue.splice(i,1);
+  renderBatchPanel();
+  if(!batchQueue.length)document.getElementById('batchPanel').classList.add('hidden');
+}
+function renderBatchPanel(){
+  document.getElementById('batchCount').textContent=batchQueue.length;
+  document.getElementById('batchList').innerHTML=batchQueue.map((u,i)=>`
+    <div class="batch-user-row">
+      <div class="batch-avatar">${u.displayName.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase()}</div>
+      <div style="flex:1;"><div style="font-weight:600;font-size:13px;">${u.displayName}</div><div style="font-size:11px;color:#64748b;">${u.mail||u.userPrincipalName||''}</div></div>
+      <button onclick="removeFromBatch(${i})" style="background:none;border:none;cursor:pointer;color:#d93025;font-size:18px;line-height:1;padding:0 4px;">✕</button>
+    </div>`).join('');
+}
+async function runBatch(){
+  if(!batchQueue.length)return;
+  const doBackup=document.getElementById('batchChkBackup').checked;
+  const doOffboard=document.getElementById('batchChkOffboard').checked;
+  if(!doBackup&&!doOffboard){toast('warn','Batch','Select at least one action');return;}
+  const log=document.getElementById('batchLog');
+  log.innerHTML='';log.style.display='block';
+  document.getElementById('runBatchBtn').disabled=true;
+  const queue=[...batchQueue];
+  const addLog=(msg,type='info')=>{log.innerHTML+=`<div style="padding:2px 0;font-size:12px;color:${type==='err'?'#d93025':type==='ok'?'#1e8e3e':'#334155'};">${msg}</div>`;log.scrollTop=log.scrollHeight;};
+  for(let i=0;i<queue.length;i++){
+    const u=queue[i];
+    addLog(`⏳ [${i+1}/${queue.length}] ${u.displayName}...`);
+    try{
+      const full=await api(`/users/${u.id}?$select=id,displayName,mail,userPrincipalName,accountEnabled,jobTitle,department,onPremisesLastSyncDateTime`);
+      await selectUser(full);
+      if(doBackup){
+        addLog(`  📁 Running backup...`);
+        await runBackup();
+        addLog(`  ✓ Backup complete`,'ok');
+      }
+      if(doOffboard){
+        addLog(`  ⚙️ Running offboarding...`);
+        document.getElementById('confirmOffboard').checked=true;
+        document.getElementById('offboardBtn').disabled=false;
+        await executeOffboarding();
+        addLog(`  ✓ Offboarding complete`,'ok');
+      }
+      addLog(`✅ ${u.displayName} — done`,'ok');
+    }catch(e){addLog(`❌ ${u.displayName}: ${e.message}`,'err');}
+  }
+  addLog(`🏁 Batch complete — ${queue.length} users processed`);
+  document.getElementById('runBatchBtn').disabled=false;
+  batchQueue=[];renderBatchPanel();
+  setTimeout(()=>document.getElementById('batchPanel').classList.add('hidden'),3000);
+}
+
+// ===== CSV EXPORT =====
+function exportHistoryCSV(){
+  if(!historyData.length){toast('warn','Export','No history to export.');return;}
+  const t=T[lang];
+  const headers=[t.thType,t.thUser,t.thEmail,t.thDate,t.thActions,t.thReason,t.thAdmin,t.thStatus,t.thNotes];
+  const rows=historyData.map(h=>[
+    h.type,
+    h.user||'',
+    h.email||'',
+    h.date?new Date(h.date).toLocaleString(lang==='es'?'es-AR':'en-US'):'',
+    (h.actions||h.backupTypes||[]).join('; '),
+    h.reason||'',
+    h.admin||'',
+    h.status||'',
+    h.notes||''
+  ]);
+  const csv=[headers,...rows].map(r=>r.map(c=>`"${(c+'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`offboarding-history-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+// ===== EMAIL TEMPLATE =====
+function getEmailTemplate(){
+  const s=localStorage.getItem('emailTemplate');
+  if(s){try{return JSON.parse(s);}catch{}}
+  return null;
+}
+function buildDefaultEmailBody(){
+  const notes=document.getElementById('offboardingNotes')?.value||'';
+  const blocked=document.getElementById('chkBlock')?.checked;
+  return `<h2 style="color:#c62828;">🚀 Offboarding Completed</h2>\n    <p><strong>User:</strong> ${currentUser?.displayName||''} (${currentUser?.mail||currentUser?.userPrincipalName||''})</p>\n    <p><strong>Reason:</strong> ${document.getElementById('departureReason')?.value||''}</p>\n    <p><strong>Block Sign-in:</strong> ${blocked?'✅ Account blocked':'—'}</p>\n    ${notes?`<p><strong>Notes:</strong> ${notes}</p>`:''}\n    <p><strong>Executed by:</strong> ${adminEmail}</p>\n    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>`;
+}
+function toggleEmailTemplate(){
+  const ed=document.getElementById('emailTplEditor');
+  const chevron=document.getElementById('emailTplChevron');
+  const open=ed.style.display==='none';
+  ed.style.display=open?'block':'none';
+  if(chevron)chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+  if(open){
+    const tpl=getEmailTemplate();
+    document.getElementById('emailTplSubject').value=tpl?.subject||`Offboarding Complete: ${currentUser?.displayName||'[User]'}`;
+    document.getElementById('emailTplBody').value=tpl?.body||buildDefaultEmailBody();
+  }
+}
+function saveEmailTemplate(){
+  const subject=document.getElementById('emailTplSubject').value.trim();
+  const body=document.getElementById('emailTplBody').value;
+  if(!subject){toast('warn','Template','Subject cannot be empty.');return;}
+  localStorage.setItem('emailTemplate',JSON.stringify({subject,body}));
+  const s=document.getElementById('emailTplStatus');
+  s.style.display='block';setTimeout(()=>s.style.display='none',2500);
+}
+function resetEmailTemplate(){
+  localStorage.removeItem('emailTemplate');
+  document.getElementById('emailTplSubject').value=`Offboarding Complete: ${currentUser?.displayName||'[User]'}`;
+  document.getElementById('emailTplBody').value=buildDefaultEmailBody();
+  toast('ok','Reset','Email template reset to default.');
 }
 
 // ===== NOTIFICATION =====
 async function sendNotification(ok){
   if(notifyEmails.length===0)return;
-  const subject=`Offboarding ${ok?'Complete':'Partial'}: ${currentUser.displayName}`;
-  const body=`
-    <h2>Offboarding ${ok?'Completed':'Completed with Errors'}</h2>
+  const notes=document.getElementById('offboardingNotes').value;
+  const blocked=document.getElementById('chkBlock').checked;
+  const tpl=getEmailTemplate();
+  const subject=tpl?.subject||`Offboarding Complete: ${currentUser.displayName}`;
+  const body=tpl?.body||`
+    <h2 style="color:#c62828;">🚀 Offboarding Completed</h2>
     <p><strong>User:</strong> ${currentUser.displayName} (${currentUser.mail||currentUser.userPrincipalName})</p>
     <p><strong>Reason:</strong> ${document.getElementById('departureReason').value}</p>
-    <p><strong>Notes:</strong> ${document.getElementById('offboardingNotes').value||'—'}</p>
+    <p><strong>Block Sign-in:</strong> ${blocked?'✅ Account blocked':'—'}</p>
+    ${notes?`<p><strong>Notes:</strong> ${notes}</p>`:''}
     <p><strong>Executed by:</strong> ${adminEmail}</p>
-    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-    <p><strong>Status:</strong> ${ok?'✅ All steps completed successfully':'⚠️ Some steps had errors'}</p>
-    <p>Backup stored at: offboarding-backups/${currentUser.displayName}/</p>`;
+    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>`;
   const toRecipients=notifyEmails.map(e=>({emailAddress:{address:e}}));
   try{
     await api(`/users/${adminEmail}/sendMail`,{method:'POST',body:JSON.stringify({message:{subject,body:{contentType:'HTML',content:body},toRecipients},saveToSentItems:true})});
     toast('ok','Email sent','Notification sent to '+notifyEmails.join(', '));
   }catch(e){toast('error','Email failed',e.message,8000);console.error('Email notification error:',e);}
+}
+
+// ===== BACKUP NOTIFY & SCHEDULE =====
+let backupNotifyEmails=[];
+let fullRunMode=false;
+function renderBackupEmailChips(){
+  const c=document.getElementById('backupEmailChips');if(!c)return;
+  c.innerHTML=backupNotifyEmails.map((e,i)=>`<span style="display:inline-flex;align-items:center;gap:6px;background:#e6f9f0;color:#1e8e3e;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:500;">${e}${e===adminEmail?'<span style="font-size:10px;color:#888;margin-left:2px;">(you)</span>':''}<span onclick="removeBackupEmail(${i})" style="cursor:pointer;color:#999;font-size:16px;line-height:1;">&times;</span></span>`).join('');
+}
+function removeBackupEmail(i){backupNotifyEmails.splice(i,1);renderBackupEmailChips();}
+function toggleBackupNotify(){
+  const s=document.getElementById('backupNotifySection');
+  const ch=document.getElementById('backupNotifyChevron');
+  const open=s.style.display==='none';
+  s.style.display=open?'block':'none';
+  if(ch)ch.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+  if(open&&!backupNotifyEmails.length&&adminEmail){backupNotifyEmails=[adminEmail];renderBackupEmailChips();}
+}
+async function addBackupEmail(){
+  const input=document.getElementById('backupEmailInput');
+  const q=input.value.trim();if(!q)return;
+  if(q.includes('@')){
+    if(!backupNotifyEmails.includes(q)){backupNotifyEmails.push(q);renderBackupEmailChips();}
+    input.value='';document.getElementById('backupEmailSuggestions').style.display='none';return;
+  }
+  try{
+    const words=q.replace(/'/g,"''").split(/\s+/).filter(Boolean);
+    let filters=[`startsWith(displayName,'${q.replace(/'/g,"''")}')` ];
+    for(const w of words){filters.push(`startsWith(displayName,'${w}')`);filters.push(`startsWith(givenName,'${w}')`);filters.push(`startsWith(surname,'${w}')`);}
+    const filter=[...new Set(filters)].join(' or ');
+    const r=await api(`/users?$filter=${encodeURIComponent(filter)}&$select=displayName,mail,userPrincipalName&$top=5`);
+    if(r.value&&r.value.length){
+      const box=document.getElementById('backupEmailSuggestions');
+      box.style.display='block';box.style.cssText='margin-top:6px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;background:#fff;';
+      box.innerHTML=r.value.map(u=>{const email=u.mail||u.userPrincipalName;return `<div onclick="pickBackupEmail('${email}')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:13px;" onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background='#fff'"><strong>${u.displayName}</strong><span style="color:#888;">${email}</span></div>`;}).join('');
+    }else{toast('warn','No results','No users found for "'+q+'"');}
+  }catch(e){toast('error','Search error',e.message);}
+}
+function pickBackupEmail(email){
+  if(!backupNotifyEmails.includes(email)){backupNotifyEmails.push(email);renderBackupEmailChips();}
+  document.getElementById('backupEmailInput').value='';
+  document.getElementById('backupEmailSuggestions').style.display='none';
+}
+async function sendBackupNotification(ok,stats){
+  if(!backupNotifyEmails.length)return;
+  const subject=`Backup ${ok?'Complete':'Completed with errors'}: ${currentUser?.displayName||''}`;
+  const body=`<h2>📁 Backup ${ok?'Completed':'Completed with Errors'}</h2>
+    <p><strong>User:</strong> ${currentUser?.displayName||''} (${currentUser?.mail||currentUser?.userPrincipalName||''})</p>
+    ${stats.od?`<p>📁 OneDrive: ${stats.od.done} files (${stats.od.totalMB} MB), ${stats.od.skipped} skipped</p>`:''}
+    ${stats.em?`<p>📧 Emails: ${stats.em.total} saved, ${stats.em.skipped} skipped</p>`:''}
+    <p><strong>Executed by:</strong> ${adminEmail}</p>
+    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>`;
+  const toRecipients=backupNotifyEmails.map(e=>({emailAddress:{address:e}}));
+  try{
+    await api(`/users/${adminEmail}/sendMail`,{method:'POST',body:JSON.stringify({message:{subject,body:{contentType:'HTML',content:body},toRecipients},saveToSentItems:true})});
+    toast('ok','Email sent','Backup notification sent to '+backupNotifyEmails.join(', '));
+  }catch(e){toast('error','Email failed',e.message,5000);}
+}
+async function scheduleBackup(schedDate){
+  const doOneDrive=document.getElementById('chkOneDrive').checked;
+  const doEmails=document.getElementById('chkEmails').checked;
+  const entry={id:Date.now().toString(),type:'backup',scheduledFor:schedDate,user:{id:currentUser.id,displayName:currentUser.displayName,mail:currentUser.mail||currentUser.userPrincipalName},backupOptions:{doOneDrive,doEmails},notifyEmails:[...backupNotifyEmails],scheduledBy:adminEmail,createdAt:new Date().toISOString()};
+  const existing=JSON.parse(await readBlob('_scheduled/pending.json')||'[]');
+  existing.push(entry);
+  await uploadBlob('_scheduled/pending.json',JSON.stringify(existing),'application/json');
+  document.getElementById('backupScheduleDate').value='';
+  toast('success','Scheduled',`Backup for ${currentUser.displayName} scheduled for ${new Date(schedDate).toLocaleString()}`);
+}
+
+// ===== FULL RUN =====
+async function runFullRun(){
+  const schedDate=document.getElementById('fullRunScheduleDate').value;
+  if(schedDate){await scheduleFullRun(schedDate);return;}
+  fullRunMode=true;
+  let backupOk=true,offboardOk=true,odStats=null,emStats=null;
+  // Capture stats by temporarily wrapping showBackupSummary
+  const origShowBackup=window.showBackupSummary;
+  window.showBackupSummary=(od,em)=>{odStats=od;emStats=em;origShowBackup(od,em);};
+  try{await runBackup();}catch(e){backupOk=false;}
+  window.showBackupSummary=origShowBackup;
+  try{await runOffboarding();}catch(e){offboardOk=false;}
+  fullRunMode=false;
+  // Send combined notification using offboarding notify list (+ backup notify list)
+  const allEmails=[...new Set([...notifyEmails,...backupNotifyEmails])];
+  if(allEmails.length){
+    const ok=backupOk&&offboardOk;
+    const subject=`Full Run ${ok?'Complete':'Completed with errors'}: ${currentUser?.displayName||''}`;
+    const body=`<h2>🚀 Full Run ${ok?'Completed':'Completed with Errors'}</h2>
+      <p><strong>User:</strong> ${currentUser?.displayName||''} (${currentUser?.mail||currentUser?.userPrincipalName||''})</p>
+      <h3 style="margin-top:12px;">📁 Backup</h3>
+      ${odStats?`<p>OneDrive: ${odStats.done} files (${odStats.totalMB} MB), ${odStats.skipped} skipped</p>`:'<p>OneDrive: not run</p>'}
+      ${emStats?`<p>Emails: ${emStats.total} saved, ${emStats.skipped} skipped</p>`:'<p>Emails: not run</p>'}
+      <h3 style="margin-top:12px;">⚙️ Offboarding</h3>
+      <p>Status: ${offboardOk?'✅ Complete':'⚠️ Completed with errors'}</p>
+      <p><strong>Reason:</strong> ${document.getElementById('departureReason')?.value||''}</p>
+      <p><strong>Executed by:</strong> ${adminEmail}</p>
+      <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>`;
+    const toRecipients=allEmails.map(e=>({emailAddress:{address:e}}));
+    try{
+      await api(`/users/${adminEmail}/sendMail`,{method:'POST',body:JSON.stringify({message:{subject,body:{contentType:'HTML',content:body},toRecipients},saveToSentItems:true})});
+      toast('ok','Email sent','Full Run summary sent to '+allEmails.join(', '));
+    }catch(e){toast('error','Email failed',e.message,5000);}
+  }
+}
+async function scheduleFullRun(schedDate){
+  const doOneDrive=document.getElementById('chkOneDrive').checked;
+  const doEmails=document.getElementById('chkEmails').checked;
+  const entry={id:Date.now().toString(),type:'fullrun',scheduledFor:schedDate,user:{id:currentUser.id,displayName:currentUser.displayName,mail:currentUser.mail||currentUser.userPrincipalName},backupOptions:{doOneDrive,doEmails},actions:{doLic:document.getElementById('chkLicenses').checked,doGrp:document.getElementById('chkGroups').checked,doBlk:document.getElementById('chkBlock').checked},reason:document.getElementById('departureReason').value,notes:document.getElementById('offboardingNotes').value,notifyEmails:[...backupNotifyEmails],scheduledBy:adminEmail,createdAt:new Date().toISOString()};
+  const existing=JSON.parse(await readBlob('_scheduled/pending.json')||'[]');
+  existing.push(entry);
+  await uploadBlob('_scheduled/pending.json',JSON.stringify(existing),'application/json');
+  document.getElementById('fullRunScheduleDate').value='';
+  toast('success','Scheduled',`Full Run for ${currentUser.displayName} scheduled for ${new Date(schedDate).toLocaleString()}`);
+}
+
+// ===== DARK MODE =====
+function toggleDarkMode(){
+  const dark=document.documentElement.dataset.theme==='dark';
+  document.documentElement.dataset.theme=dark?'light':'dark';
+  localStorage.setItem('theme',dark?'light':'dark');
+  const b=document.getElementById('darkModeBtn');if(b)b.textContent=dark?'🌙':'☀️';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const t=localStorage.getItem('theme')||'light';
+  if(t==='dark'){document.documentElement.dataset.theme='dark';const b=document.getElementById('darkModeBtn');if(b)b.textContent='☀️';}
+});
+
+// ===== AUDIT TRAIL =====
+const AUDIT_BLOB='_audit/trail.json';
+async function logAudit(action,details={}){
+  try{
+    const entry={timestamp:new Date().toISOString(),admin:adminEmail||'unknown',action,...details};
+    const existing=await readBlob(AUDIT_BLOB);
+    const arr=existing?JSON.parse(existing):[];
+    arr.unshift(entry);
+    if(arr.length>500)arr.length=500;
+    await uploadBlob(AUDIT_BLOB,JSON.stringify(arr),'application/json');
+  }catch(e){console.warn('Audit log error:',e);}
+}
+function toggleAuditTrail(){
+  const body=document.getElementById('auditBody');
+  const chevron=document.getElementById('auditChevron');
+  const open=body.style.display==='none';
+  body.style.display=open?'block':'none';
+  if(chevron)chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+  if(open)loadAuditTrail();
+}
+async function loadAuditTrail(){
+  const content=document.getElementById('auditContent');
+  content.innerHTML='<div style="padding:20px;text-align:center;"><span class="spinner"></span></div>';
+  try{
+    const raw=await readBlob(AUDIT_BLOB);
+    const entries=raw?JSON.parse(raw):[];
+    if(!entries.length){
+      content.innerHTML=`<div class="empty-state" style="padding:20px;"><div class="es-icon">🔐</div><p>${T[lang].auditEmpty}</p></div>`;
+      return;
+    }
+    const rows=entries.map(e=>{
+      const d=new Date(e.timestamp);
+      const dateStr=d.toLocaleString();
+      const detailParts=[];
+      if(e.user)detailParts.push(`<strong>${e.user}</strong>`);
+      if(e.email)detailParts.push(e.email);
+      if(e.status)detailParts.push(`Status: ${e.status}`);
+      if(e.types)detailParts.push(`Types: ${e.types.join(', ')}`);
+      if(e.actions)detailParts.push(`Actions: ${(e.actions||[]).join(', ')}`);
+      return `<tr>
+        <td style="padding:8px 12px;white-space:nowrap;font-size:12px;color:#64748b;">${dateStr}</td>
+        <td style="padding:8px 12px;"><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">${e.action}</span></td>
+        <td style="padding:8px 12px;font-size:12px;color:#334155;">${detailParts.join(' · ')}</td>
+        <td style="padding:8px 12px;font-size:12px;color:#64748b;">${e.admin}</td>
+      </tr>`;
+    }).join('');
+    content.innerHTML=`<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead><tr style="background:#f8fafc;border-bottom:2px solid #e8ecf0;">
+        <th style="padding:8px 12px;text-align:left;font-size:11px;color:#64748b;font-weight:600;">TIMESTAMP</th>
+        <th style="padding:8px 12px;text-align:left;font-size:11px;color:#64748b;font-weight:600;">ACTION</th>
+        <th style="padding:8px 12px;text-align:left;font-size:11px;color:#64748b;font-weight:600;">DETAILS</th>
+        <th style="padding:8px 12px;text-align:left;font-size:11px;color:#64748b;font-weight:600;">ADMIN</th>
+      </tr></thead>
+      <tbody style="divide-y:#f1f5f9;">${rows}</tbody>
+    </table></div>`;
+  }catch(e){content.innerHTML=`<div style="padding:16px;color:#d93025;">Error loading audit trail: ${e.message}</div>`;}
 }
 
 // Init MSAL
